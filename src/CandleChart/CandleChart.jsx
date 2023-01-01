@@ -1,30 +1,32 @@
 import React, { useRef, useEffect } from "react";
 import {
   scaleLinear,
+  scaleLog,
   scaleTime,
   axisBottom,
   axisLeft,
   select,
   extent,
   max,
+  min,
 } from "d3";
 import useResizeObserver from "../core/hooks/useResizeObserver";
 import { ChartWrapper, Chart } from "./CandleChart.styled";
 
-const CandleChart = ({ marketData: data }) => {
+const margins = {
+  top: 20,
+  right: 20,
+  bottom: 20,
+  left: 40,
+};
+
+const CandleChart = ({ marketData: data, withLogScale = true }) => {
   const wrapperRef = useRef();
   const svgRef = useRef();
   const dimensions = useResizeObserver(wrapperRef);
   const { width, height } = dimensions || {
     width: 0,
     height: 0,
-  };
-
-  const margins = {
-    top: 20,
-    right: 20,
-    bottom: 20,
-    left: 20,
   };
 
   useEffect(() => {
@@ -36,20 +38,48 @@ const CandleChart = ({ marketData: data }) => {
       .domain(extent(data, (d) => d.date))
       .range([margins.left, width - margins.right]);
 
-    const yScale = scaleLinear()
-      .domain([0, max(data, (d) => d.high)])
-      .range([height - margins.bottom, margins.top]);
+    const yScale = withLogScale
+      ? scaleLog()
+          .domain([min(data, (d) => d.low), max(data, (d) => d.high)])
+          .range([height - margins.bottom, margins.top])
+      : scaleLinear()
+          .domain([0, max(data, (d) => d.high)])
+          .range([height - margins.bottom, margins.top]);
 
-    svg
+    const candleContainer = svg
+      .selectAll(".candle-container")
+      .data([null])
+      .join("g")
+      .attr("class", "candle-container");
+
+    const candleWidth = 2;
+
+    candleContainer
       .selectAll(".candle")
       .data(data)
       .join("rect")
       .attr("class", "candle")
       .attr("x", (d) => xScale(d.date))
-      .attr("y", (d) => yScale(d.high))
-      .attr("width", 2)
-      .attr("height", (d) => yScale(d.low) - yScale(d.high))
+      .attr("y", (d) => (d.open > d.close ? yScale(d.open) : yScale(d.close)))
+      .attr("width", candleWidth)
+      .attr("height", (d) =>
+        d.open > d.close
+          ? yScale(d.close) - yScale(d.open)
+          : yScale(d.open) - yScale(d.close)
+      )
       .attr("fill", (d) => (d.open > d.close ? "red" : "green"));
+
+    candleContainer
+      .selectAll(".candle-line")
+      .data(data)
+      .join("line")
+      .attr("class", "candle-line")
+      .attr("x1", (d) => xScale(d.date) + candleWidth / 2)
+      .attr("x2", (d) => xScale(d.date) + candleWidth / 2)
+      .attr("y1", (d) => yScale(d.high))
+      .attr("y2", (d) => yScale(d.low))
+      .attr("stroke-width", 0.5)
+      .attr("stroke", (d) => (d.open > d.close ? "red" : "green"));
 
     // Add your axes, gridlines, etc. here
     // X axis
@@ -69,7 +99,7 @@ const CandleChart = ({ marketData: data }) => {
       .attr("class", "y-axis")
       .attr("transform", `translate(${margins.left}, 0)`)
       .call(axisLeft(yScale));
-  }, [data, dimensions]);
+  }, [data, dimensions, margins, withLogScale]);
 
   return (
     <ChartWrapper ref={wrapperRef}>
