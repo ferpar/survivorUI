@@ -1,6 +1,6 @@
 import './App.css'
-import results from '../results.json'
-import heatMapRaw from '../marginHeatmap.json'
+import results from './datasets/eth4months/results.json'
+import heatMapRaw from './datasets/eth4months/marginHeatmap.json'
 import useMapMarketData from './core/hooks/useMapMarketData'
 import CandleChart from './CandleChart/CandleChart'
 import HeatMap from './HeatMap/HeatMap'

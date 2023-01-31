@@ -52,7 +52,8 @@ const CandleChart = ({ marketData: data, withLogScale = true }) => {
       .join("g")
       .attr("class", "candle-container");
 
-    const candleWidth = 2;
+    const candleWidth =
+      (0.8 * (width - margins.left - margins.right)) / data.length;
 
     candleContainer
       .selectAll(".candle")

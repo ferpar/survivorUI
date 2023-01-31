@@ -66,8 +66,8 @@ export default function useHeatMapData(heatMapDataRaw: RawSimulationResult) {
       const { baseCurrency, quoteCurrency, balance, baseBalance, quoteBalance } = wallet;
       const { type, date, amount } = initialTransaction;
       return {
-          limit: marginLimit,
-          stop: marginStop,
+          limit: Number(parseInt(Math.round(marginLimit*100))),
+          stop: Number(parseInt(Math.round(marginStop*100))),
           profitLoss: baseBalance/amount
       };
     });

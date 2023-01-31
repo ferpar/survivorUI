@@ -1,63 +1,17 @@
 import React, { useRef, useEffect } from "react";
-import { select, scaleBand, scaleLinear, axisBottom, axisLeft } from "d3";
+import {
+  select,
+  scaleBand,
+  scaleLinear,
+  axisBottom,
+  axisLeft,
+  min,
+  max,
+  mean,
+} from "d3";
 import useResizeObserver from "../core/hooks/useResizeObserver";
 import useHeatMapData from "../core/hooks/useHeatMapData";
 import { ChartWrapper, Chart } from "./HeatMap.styled";
-
-const data = [
-  {
-    X1: 1,
-    X2: 1,
-    value: 1,
-  },
-  {
-    X1: 1,
-    X2: 2,
-    value: 2,
-  },
-  {
-    X1: 1,
-    X2: 3,
-    value: 3,
-  },
-  {
-    X1: 2,
-    X2: 1,
-    value: 2,
-  },
-  {
-    X1: 2,
-    X2: 2,
-    value: 3,
-  },
-  {
-    X1: 2,
-    X2: 3,
-    value: 1,
-  },
-  {
-    X1: 3,
-    X2: 1,
-    value: 3,
-  },
-  {
-    X1: 3,
-    X2: 2,
-    value: 1,
-  },
-  {
-    X1: 3,
-    X2: 3,
-    value: 2,
-  },
-];
-
-// [1, 2, 3],
-// [2, 3, 1],
-// [3, 1, 2],
-
-const xLabels = [1, 2, 3];
-const yLabels = [1, 2, 3];
 
 const margins = {
   top: 20,
@@ -82,14 +36,15 @@ const HeatMap = ({ rawData }) => {
   useEffect(() => {
     const svg = select(svgRef.current);
     if (!dimensions) return;
+    if (!heatMapData) return;
 
     const xScale = scaleBand()
-      .domain(xLabels)
+      .domain(heatMapData.limitLabels)
       .range([margins.left, width - margins.right])
       .padding(0.1);
 
     svg
-      .selectAll("x-axis")
+      .selectAll(".x-axis")
       .data([null])
       .join("g")
       .attr("class", "x-axis")
@@ -98,32 +53,78 @@ const HeatMap = ({ rawData }) => {
       .call(axisBottom(xScale));
 
     const yScale = scaleBand()
-      .domain(yLabels)
-      .range([margins.top, height - margins.bottom])
+      .domain(heatMapData.stopLabels)
+      .range([height - margins.bottom, margins.top])
       .padding(0.1);
 
     svg
-      .selectAll("y-axis")
+      .selectAll(".y-axis")
       .data([null])
       .join("g")
       .attr("class", "y-axis")
       .style("font-size", 15)
+      .attr("transform", `translate(${margins.left}, 0)`)
       .call(axisLeft(yScale));
 
     const colorScale = scaleLinear()
-      .domain([1, 3])
-      .range(["#ffffff", "#ff0000"]);
+      .domain([
+        min(heatMapData.data, (dataPoint) => dataPoint.profitLoss),
+        mean(heatMapData.data, (dataPoint) => dataPoint.profitLoss),
+        0.95 * max(heatMapData.data, (dataPoint) => dataPoint.profitLoss),
+        max(heatMapData.data, (dataPoint) => dataPoint.profitLoss),
+      ])
+      .range(["black", "orange", "green", "blue"]);
 
-    svg
+    const borderRadius = 3;
+
+    const samples = svg
       .selectAll("rect")
-      .data(data)
+      .data(heatMapData.data)
       .join("rect")
-      .attr("x", (d, i) => xScale(d.X1))
-      .attr("y", (d, i) => yScale(d.X2))
+      .attr("x", (d) => xScale(d.limit))
+      .attr("y", (d) => yScale(d.stop))
       .attr("width", xScale.bandwidth())
       .attr("height", yScale.bandwidth())
-      .style("fill", (d) => colorScale(d.value));
-  }, [dimensions]);
+      .attr("rx", borderRadius)
+      .attr("ry", borderRadius)
+      .style("fill", (d) => colorScale(d.profitLoss))
+      .style("cursor", "pointer");
+
+    const tooltip = select("body")
+      .selectAll(".tooltip")
+      .data([null])
+      .join("div")
+      .attr("class", "tooltip")
+      .style("position", "absolute")
+      .style("background-color", "white")
+      .style("padding", "5px")
+      .style("border", "1px solid black")
+      .style("opacity", 0);
+
+    const tooltipDisplacement = { x: 20, y: -60 };
+
+    samples
+      .on("mouseover", (event, d) => {
+        tooltip
+          .style("opacity", 1)
+          .style("display", "block")
+          .style("left", `${event.pageX + tooltipDisplacement.x}px`)
+          .style("top", `${event.pageY + tooltipDisplacement.y}px`)
+          .html(
+            `Limit: ${d.limit}<br/>Stop: ${d.stop}<br/>Profit/Loss: ${d.profitLoss}`
+          );
+      })
+      .on("mouseout", () => {
+        tooltip.style("opacity", 0).style("display", "none");
+      })
+      .on("mousemove", (event) => {
+        tooltip
+          .style("left", `${event.pageX + tooltipDisplacement.x}px`)
+          .style("top", `${event.pageY + tooltipDisplacement.y}px`)
+          .style("opacity", 1)
+          .style("display", "block");
+      });
+  }, [dimensions, heatMapData]);
 
   return (
     <ChartWrapper ref={wrapperRef}>
