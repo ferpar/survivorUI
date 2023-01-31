@@ -33,6 +33,7 @@ const CandleChart = ({ marketData: data, withLogScale = true }) => {
     const svg = select(svgRef.current);
     if (!dimensions) return;
     if (!data) return;
+    console.log(data);
 
     const xScale = scaleTime()
       .domain(extent(data, (d) => d.date))

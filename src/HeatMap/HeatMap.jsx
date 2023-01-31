@@ -31,7 +31,6 @@ const HeatMap = ({ rawData }) => {
   };
 
   const heatMapData = useHeatMapData(rawData);
-  console.log(heatMapData);
 
   useEffect(() => {
     const svg = select(svgRef.current);
