@@ -24,8 +24,8 @@ const useMapMarketData: marketDataMapper = (): MarketDatum[] => {
   // Parameters for the backtest
   const stop = 0.9;
   const limit = 1.1;
-  const startTimestamp = 1449446400000;
-  const endTimestamp = 1659225600000;
+  const startTimestamp = 1643668497310;
+  const endTimestamp = 1675204714307;
   const baseAmount = 1000;
   const quoteAmount = 0;
   const maxSoldiers = 10;

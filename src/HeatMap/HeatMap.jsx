@@ -20,7 +20,7 @@ const margins = {
   left: 40,
 };
 
-const HeatMap = ({ rawData }) => {
+const HeatMap = ({}) => {
   const wrapperRef = useRef();
   const svgRef = useRef();
 
@@ -30,13 +30,14 @@ const HeatMap = ({ rawData }) => {
     height: 0,
   };
 
-  const heatMapData = useHeatMapData(rawData);
+  const heatMapData = useHeatMapData();
 
   useEffect(() => {
     const svg = select(svgRef.current);
     if (!dimensions) return;
-    if (!heatMapData) return;
+    if (!heatMapData?.data?.length) return;
 
+    console.log("in");
     const xScale = scaleBand()
       .domain(heatMapData.limitLabels)
       .range([margins.left, width - margins.right])
