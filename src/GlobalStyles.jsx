@@ -23,7 +23,7 @@ const GlobalStyles = createGlobalStyle`
 
   img, svg, video, canvas, audio, iframe, embed, object {
     display: block;
-    max0width: 100%;
+    max-width: 100%;
   }
 
   input, button, textarea, select {

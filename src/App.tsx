@@ -6,7 +6,17 @@ function App() {
 
   return (
       <Main>
-      <RunAnalyzer />
+        <Header>
+          <h1>Survivor Alpha 0.1</h1>
+        <Nav>
+          <ol>
+            <li>Home</li>
+            <li>Backtest</li>
+            <li>Live</li>
+          </ol>
+        </Nav>
+        </Header>
+        <RunAnalyzer />
       </Main>
   )
 }
@@ -18,8 +28,38 @@ const Main = styled.main`
   height: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
-  padding: 2rem;
-  text-align: center;
+  justify-content: center;
+  padding: 2rem 32px;
 `
+
+const Header = styled.header`
+  display: flex;
+  width: 100%;
+  & h1 {
+    flex: 1;
+    font-size: 2rem;
+    font-weight: 600;
+  }
+`
+
+const Nav = styled.nav`
+  flex: 3;
+  width: 100%;
+  & ol {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    list-style: none;
+    width: 100%;
+    & li {
+      font-size: 1.5rem;
+      font-weight: 600;
+      cursor: pointer;
+      &:hover {
+        color: #ff0000;
+      }
+    }
+  }
+`
+
