@@ -10,7 +10,6 @@ function RunAnalyzer() {
   const [candleData, setCandleData] = useState<any>(null)
 
   const marketData = useMapMarketData()
-  // const heatMapData = useMapMarketData()
 
   useEffect(() => {
     if(!!marketData?.length) {
