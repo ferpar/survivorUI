@@ -10,7 +10,7 @@ function App() {
           <h1>Survivor Alpha 0.1</h1>
         <Nav>
           <ol>
-            <li>Home</li>
+            <li>Home</li>  {/* acquire datasets */}
             <li>Backtest</li>
             <li>Live</li>
           </ol>
@@ -41,6 +41,7 @@ const Header = styled.header`
     font-size: 2rem;
     font-weight: 600;
   }
+  padding: 0 32px;
 `
 
 const Nav = styled.nav`
