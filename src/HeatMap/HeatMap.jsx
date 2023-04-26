@@ -37,7 +37,6 @@ const HeatMap = ({}) => {
     if (!dimensions) return;
     if (!heatMapData?.data?.length) return;
 
-    console.log("in");
     const xScale = scaleBand()
       .domain(heatMapData.limitLabels)
       .range([margins.left, width - margins.right])
@@ -69,11 +68,11 @@ const HeatMap = ({}) => {
     const colorScale = scaleLinear()
       .domain([
         min(heatMapData.data, (dataPoint) => dataPoint.profitLoss),
-        mean(heatMapData.data, (dataPoint) => dataPoint.profitLoss),
+        1,
         0.95 * max(heatMapData.data, (dataPoint) => dataPoint.profitLoss),
         max(heatMapData.data, (dataPoint) => dataPoint.profitLoss),
       ])
-      .range(["black", "orange", "green", "blue"]);
+      .range(["black", "white", "green", "blue"]);
 
     const borderRadius = 3;
 

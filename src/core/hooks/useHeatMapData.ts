@@ -73,13 +73,13 @@ export default function useHeatMapData() {
     {} as HeatMapData
   );
 
-  const startTimestamp = 1643668497310;
-  const endTimestamp = 1679225600000;
+  const startTimestamp = 1613668497310;
+  const endTimestamp = 1649225600000;
   const baseAmount = 1000;
   const quoteAmount = 0;
   const maxSoldiers = 10;
   const amountPerSoldier = 100;
-  const short = false;
+  const short = true;
 
   useEffect(() => {
     (async () => {
@@ -98,8 +98,8 @@ export default function useHeatMapData() {
           const { deadSoldiers, extractedSoldiers } = soldiers;
           const { balance, baseBalance, quoteBalance } = wallet;
           return {
-            limit: Number(parseInt(Math.round(marginLimit * 100))),
-            stop: Number(parseInt(Math.round(marginStop * 100))),
+            limit: Number(Math.round(marginLimit * 100)),
+            stop: Number(Math.round(marginStop * 100)),
             profitLoss: balance / baseAmount,
             baseBalance,
             quoteBalance,
