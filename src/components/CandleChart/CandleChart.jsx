@@ -10,7 +10,7 @@ import {
   max,
   min,
 } from "d3";
-import useResizeObserver from "../core/hooks/useResizeObserver";
+import useResizeObserver from "../../core/hooks/useResizeObserver";
 import { ChartWrapper, Chart } from "./CandleChart.styled";
 
 const margins = {
