@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
-import heatMapRaw from "../../datasets/eth4months/marginHeatmap.json";
 import useMapMarketData from "../../core/hooks/useMapMarketData";
 import CandleChart from "../CandleChart/CandleChart";
 import HeatMap from "../HeatMap/HeatMap";
@@ -26,7 +25,7 @@ function RunAnalyzer() {
       ) : (
         <p>...Loading</p>
       )}
-      <HeatMap rawData={heatMapRaw} />
+      <HeatMap />
     </Wrapper>
   );
 }

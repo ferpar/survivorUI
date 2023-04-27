@@ -33,11 +33,23 @@ const useMapMarketData: marketDataMapper = (): MarketDatum[] => {
   const short = false;
 
   useEffect(() => {
-    // Example URL: http://localhost:3000/backtest?stop=0.9&limit=1.1&startTimestamp=1449446400000&endTimestamp=1659225600000&baseAmount=1000&quoteAmount=0&maxSoldiers=10&amountPerSoldier=100&short=false
+    /* Example URL: http://localhost:3000/backtest
+      ?stop=0.9&limit=1.1&
+      startTimestamp=1449446400000&
+      endTimestamp=1659225600000&
+      baseAmount=1000&
+      quoteAmount=0&
+      maxSoldiers=10&
+      amountPerSoldier=100&
+      short=false */
     // fetch data from API
     (async () => {
       const marketDataRawResponse: any = await fetchJson(
-        `http://localhost:3000/backtest?stop=${stop}&limit=${limit}&startTimestamp=${startTimestamp}&endTimestamp=${endTimestamp}&baseAmount=${baseAmount}&quoteAmount=${quoteAmount}&maxSoldiers=${maxSoldiers}&amountPerSoldier=${amountPerSoldier}&short=${short}`
+        `http://localhost:3000/backtest` +
+          `?stop=${stop}&limit=${limit}&startTimestamp=${startTimestamp}&` +
+          `endTimestamp=${endTimestamp}&baseAmount=${baseAmount}&` +
+          `quoteAmount=${quoteAmount}&maxSoldiers=${maxSoldiers}&` +
+          `amountPerSoldier=${amountPerSoldier}&short=${short}`
       );
 
       const marketDataRaw: RawMarketDatum[] = marketDataRawResponse?.marketData;

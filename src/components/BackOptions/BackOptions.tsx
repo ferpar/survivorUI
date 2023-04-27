@@ -1,13 +1,34 @@
+import styled from "styled-components";
+
 const BackOptions = () => {
   return (
-    <form>
-      <label htmlFor="start-date">Start Date</label>
-      <input type="date" id="start-date" name="backtest-start" />
-      <label htmlFor="end-date">End Date</label>
-      <input type="date" id="end-date" name="backtest-end" />
-      <input type="checkbox" id="short" name="short" />
-    </form>
+    <Form>
+      <label htmlFor="start-date">
+        <span>Start Date</span>
+        <input type="date" id="start-date" name="backtest-start" />
+      </label>
+      <label htmlFor="end-date">
+        <span>End Date</span>
+        <input type="date" id="end-date" name="backtest-end" />
+      </label>
+      <label htmlFor="short-check">
+        <span>Short</span>
+        <input type="checkbox" id="short-check" name="short" />
+      </label>
+    </Form>
   );
 };
+
+const Form = styled.form`
+  align-items: baseline;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 32px;
+  & label span {
+    margin-right: 16px;
+  }
+  margin-bottom: 1rem;
+`;
 
 export default BackOptions;

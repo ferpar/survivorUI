@@ -49,7 +49,11 @@ const HeatMap = ({}) => {
       .attr("class", "x-axis")
       .style("font-size", 15)
       .attr("transform", `translate(0, ${height - margins.bottom})`)
-      .call(axisBottom(xScale));
+      .call(
+        axisBottom(xScale).tickValues(
+          xScale.domain().filter((d, i) => !((i + 1) % 2))
+        )
+      );
 
     const yScale = scaleBand()
       .domain(heatMapData.stopLabels)
