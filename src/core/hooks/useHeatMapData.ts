@@ -83,9 +83,19 @@ export default function useHeatMapData() {
 
   useEffect(() => {
     (async () => {
-      // Example url `http://localhost:3000/marginheatmap?startTimestamp=1449446400000&endTimestamp=1659225600000&baseAmount=1000&quoteAmount=0&maxSoldiers=10&amountPerSoldier=100&short=false`
+      /* Example url `http://localhost:3000/marginheatmap
+      ?startTimestamp=1449446400000&
+      endTimestamp=1659225600000&
+      baseAmount=1000&
+      quoteAmount=0&
+      maxSoldiers=10&
+      amountPerSoldier=100&
+      short=false`*/
       const heatMapDataRaw = await fetchJson(
-        `http://localhost:3000/marginheatmap?startTimestamp=${startTimestamp}&endTimestamp=${endTimestamp}&baseAmount=${baseAmount}&quoteAmount=${quoteAmount}&maxSoldiers=${maxSoldiers}&amountPerSoldier=${amountPerSoldier}&short=${short}`
+        `http://localhost:3000/marginheatmap` +
+          `?startTimestamp=${startTimestamp}&endTimestamp=${endTimestamp}&baseAmount=${baseAmount}` +
+          `&quoteAmount=${quoteAmount}&maxSoldiers=${maxSoldiers}` +
+          `&amountPerSoldier=${amountPerSoldier}&short=${short}`
       );
 
       const { backtestResults, labels }: RawSimulationResult = heatMapDataRaw;

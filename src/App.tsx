@@ -1,27 +1,25 @@
-import styled from 'styled-components'
-import RunAnalyzer from './components/RunAnalyzer/RunAnalyzer'
+import styled from "styled-components";
+import BackTest from "./components/Backtest";
 
 function App() {
-
-
   return (
-      <Main>
-        <Header>
-          <h1>Survivor Alpha 0.1</h1>
+    <Main>
+      <Header>
+        <h1>Survivor Alpha 0.1</h1>
         <Nav>
           <ol>
-            <li>Home</li>  {/* acquire datasets */}
+            <li>Home</li> {/* acquire datasets */}
             <li>Backtest</li>
             <li>Live</li>
           </ol>
         </Nav>
-        </Header>
-        <RunAnalyzer />
-      </Main>
-  )
+      </Header>
+      <BackTest />
+    </Main>
+  );
 }
 
-export default App
+export default App;
 
 const Main = styled.main`
   width: 100%;
@@ -31,7 +29,7 @@ const Main = styled.main`
   align-items: center;
   justify-content: center;
   padding: 2rem 32px;
-`
+`;
 
 const Header = styled.header`
   display: flex;
@@ -42,7 +40,7 @@ const Header = styled.header`
     font-weight: 600;
   }
   padding: 0 32px;
-`
+`;
 
 const Nav = styled.nav`
   flex: 3;
@@ -62,5 +60,4 @@ const Nav = styled.nav`
       }
     }
   }
-`
-
+`;
