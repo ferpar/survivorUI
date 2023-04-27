@@ -57,7 +57,7 @@ interface DataPoint {
   short?: boolean;
 }
 
-interface HeatMapData {
+export interface HeatMapData {
   data: DataPoint[];
   limitLabels: number[];
   stopLabels: number[];

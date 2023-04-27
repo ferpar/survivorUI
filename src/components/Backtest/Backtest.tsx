@@ -2,13 +2,16 @@ import styled from "styled-components";
 import BackOptions from "../BackOptions";
 import BackResults from "../BackResults";
 import ErrorBoundary from "../../core/ErrorBoundary";
+import BacktestProvider from "../../core/Providers/BacktestProvider";
 
 const Backtest = () => {
   return (
     <Wrapper>
-      <ErrorBoundary fallback={"Error on the Backtester"}>
-        <BackOptions />
-        <BackResults />
+      <ErrorBoundary fallback={<p>"Error on the Backtester"</p>}>
+        <BacktestProvider>
+          <BackOptions />
+          <BackResults />
+        </BacktestProvider>
       </ErrorBoundary>
     </Wrapper>
   );

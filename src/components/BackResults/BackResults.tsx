@@ -1,30 +1,11 @@
-import { useEffect, useState } from "react";
 import styled from "styled-components";
-import useMapMarketData from "../../core/hooks/useMapMarketData";
 import CandleChart from "../CandleChart/CandleChart";
 import HeatMap from "../HeatMap/HeatMap";
 
 function RunAnalyzer() {
-  const [candleData, setCandleData] = useState<any>(null);
-
-  const marketData = useMapMarketData();
-  console.log(marketData);
-
-  useEffect(() => {
-    if (!!marketData?.length) {
-      setCandleData(marketData);
-    } else {
-      setCandleData(null);
-    }
-  }, [marketData]);
-
   return (
     <Wrapper>
-      {candleData?.length ? (
-        <CandleChart marketData={candleData} />
-      ) : (
-        <p>...Loading</p>
-      )}
+      <CandleChart />
       <HeatMap />
     </Wrapper>
   );

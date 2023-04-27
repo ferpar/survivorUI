@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 
 type RawMarketDatum = [Date, number, number, number, number];
 
-interface MarketDatum {
+export interface MarketDatum {
   date: Date;
   open: number;
   high: number;

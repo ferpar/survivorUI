@@ -1,4 +1,5 @@
 import React, { useRef, useEffect } from "react";
+import { BacktestContext } from "../../core/Providers/BacktestProvider";
 import {
   select,
   scaleBand,
@@ -30,7 +31,7 @@ const HeatMap = ({}) => {
     height: 0,
   };
 
-  const heatMapData = useHeatMapData();
+  const { heatMapData } = React.useContext(BacktestContext);
 
   useEffect(() => {
     const svg = select(svgRef.current);

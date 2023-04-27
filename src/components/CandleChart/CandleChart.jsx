@@ -1,4 +1,5 @@
 import React, { useRef, useEffect } from "react";
+import { BacktestContext } from "../../core/Providers/BacktestProvider";
 import {
   scaleLinear,
   scaleLog,
@@ -20,7 +21,7 @@ const margins = {
   left: 40,
 };
 
-const CandleChart = ({ marketData: data, withLogScale = true }) => {
+const CandleChart = ({ withLogScale = true }) => {
   const wrapperRef = useRef();
   const svgRef = useRef();
   const dimensions = useResizeObserver(wrapperRef);
@@ -28,6 +29,8 @@ const CandleChart = ({ marketData: data, withLogScale = true }) => {
     width: 0,
     height: 0,
   };
+
+  const { marketData: data } = React.useContext(BacktestContext);
 
   useEffect(() => {
     const svg = select(svgRef.current);
