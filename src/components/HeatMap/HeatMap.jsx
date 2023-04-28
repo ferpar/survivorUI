@@ -8,10 +8,8 @@ import {
   axisLeft,
   min,
   max,
-  mean,
 } from "d3";
 import useResizeObserver from "../../core/hooks/useResizeObserver";
-import useHeatMapData from "../../core/hooks/useHeatMapData";
 import { ChartWrapper, Chart } from "./HeatMap.styled";
 
 const margins = {
