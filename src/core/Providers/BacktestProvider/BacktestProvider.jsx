@@ -39,7 +39,6 @@ const BacktestProvider = ({ children }) => {
   const marketData = useMapMarketData(formState);
   const heatMapData = useHeatmapData(formState);
 
-  console.log(formState);
   return (
     <BacktestContext.Provider
       value={{
