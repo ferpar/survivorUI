@@ -74,7 +74,7 @@ const useMapMarketData: marketDataMapper = ({
       });
       setData(marketData);
     })();
-  }, []);
+  }, [startDate, endDate, short]);
 
   return data;
 };

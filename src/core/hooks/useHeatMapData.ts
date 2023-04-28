@@ -141,7 +141,7 @@ const useHeatMapData: useHeatMapData = ({
 
       setHeatMapData(newHeatMapData);
     })();
-  }, []);
+  }, [startDate, endDate, short]);
 
   return heatMapData;
 };
