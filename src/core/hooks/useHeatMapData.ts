@@ -68,18 +68,29 @@ const fetchJson = async (url: string) => {
   return response.json();
 };
 
-export default function useHeatMapData() {
+interface FormState {
+  startDate: number;
+  endDate: number;
+  short: boolean;
+}
+
+type useHeatMapData = (formState: FormState) => HeatMapData;
+
+const useHeatMapData: useHeatMapData = ({
+  startDate,
+  endDate,
+  short = false,
+}) => {
   const [heatMapData, setHeatMapData] = useState<HeatMapData>(
     {} as HeatMapData
   );
 
-  const startTimestamp = 1613668497310;
-  const endTimestamp = 1649225600000;
+  const startTimestamp = new Date(startDate).getTime();
+  const endTimestamp = new Date(endDate).getTime();
   const baseAmount = 1000;
   const quoteAmount = 0;
   const maxSoldiers = 10;
   const amountPerSoldier = 100;
-  const short = true;
 
   useEffect(() => {
     (async () => {
@@ -133,4 +144,6 @@ export default function useHeatMapData() {
   }, []);
 
   return heatMapData;
-}
+};
+
+export default useHeatMapData;

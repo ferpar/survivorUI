@@ -10,7 +10,11 @@ export interface MarketDatum {
   close: number;
 }
 
-type marketDataMapper = () => MarketDatum[];
+type marketDataMapper = (formState: {
+  startDate: number;
+  endDate: number;
+  short: boolean;
+}) => MarketDatum[];
 
 const fetchJson = async (url: string) => {
   const response = await fetch(url);
@@ -18,19 +22,22 @@ const fetchJson = async (url: string) => {
 };
 
 // Description: This hook is used to map the market data from the API to the format that the chart library expects
-const useMapMarketData: marketDataMapper = (): MarketDatum[] => {
+const useMapMarketData: marketDataMapper = ({
+  startDate,
+  endDate,
+  short = false,
+}) => {
   const [data, setData] = useState<MarketDatum[]>([]);
 
   // Parameters for the backtest
   const stop = 0.9;
   const limit = 1.1;
-  const startTimestamp = 1613668497310;
-  const endTimestamp = 1645204714307;
+  const startTimestamp = new Date(startDate).getTime();
+  const endTimestamp = new Date(endDate).getTime();
   const baseAmount = 1000;
   const quoteAmount = 0;
   const maxSoldiers = 10;
   const amountPerSoldier = 100;
-  const short = false;
 
   useEffect(() => {
     /* Example URL: http://localhost:3000/backtest

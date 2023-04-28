@@ -7,7 +7,7 @@ import BacktestProvider from "../../core/Providers/BacktestProvider";
 const Backtest = () => {
   return (
     <Wrapper>
-      <ErrorBoundary fallback={<p>"Error on the Backtester"</p>}>
+      <ErrorBoundary fallback={<p>"Error on Backtester"</p>}>
         <BacktestProvider>
           <BackOptions />
           <BackResults />
