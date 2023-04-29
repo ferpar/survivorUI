@@ -72,6 +72,9 @@ interface FormState {
   startDate: number;
   endDate: number;
   short: boolean;
+  baseAmount: number;
+  maxSoldiers: number;
+  amountPerSoldier: number;
 }
 
 type useHeatMapData = (formState: FormState) => HeatMapData;
@@ -80,6 +83,9 @@ const useHeatMapData: useHeatMapData = ({
   startDate,
   endDate,
   short = false,
+  baseAmount = 1000,
+  maxSoldiers = 10,
+  amountPerSoldier = 100,
 }) => {
   const [heatMapData, setHeatMapData] = useState<HeatMapData>(
     {} as HeatMapData
@@ -87,10 +93,7 @@ const useHeatMapData: useHeatMapData = ({
 
   const startTimestamp = new Date(startDate).getTime();
   const endTimestamp = new Date(endDate).getTime();
-  const baseAmount = 1000;
   const quoteAmount = 0;
-  const maxSoldiers = 10;
-  const amountPerSoldier = 100;
 
   useEffect(() => {
     (async () => {
@@ -141,7 +144,7 @@ const useHeatMapData: useHeatMapData = ({
 
       setHeatMapData(newHeatMapData);
     })();
-  }, [startDate, endDate, short]);
+  }, [startDate, endDate, short, baseAmount, maxSoldiers, amountPerSoldier]);
 
   return heatMapData;
 };

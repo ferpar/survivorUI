@@ -14,6 +14,9 @@ type marketDataMapper = (formState: {
   startDate: number;
   endDate: number;
   short: boolean;
+  baseAmount: number;
+  maxSoldiers: number;
+  amountPerSoldier: number;
 }) => MarketDatum[];
 
 const fetchJson = async (url: string) => {
@@ -26,6 +29,9 @@ const useMapMarketData: marketDataMapper = ({
   startDate,
   endDate,
   short = false,
+  baseAmount = 1000,
+  maxSoldiers = 10,
+  amountPerSoldier = 100,
 }) => {
   const [data, setData] = useState<MarketDatum[]>([]);
 
@@ -34,10 +40,7 @@ const useMapMarketData: marketDataMapper = ({
   const limit = 1.1;
   const startTimestamp = new Date(startDate).getTime();
   const endTimestamp = new Date(endDate).getTime();
-  const baseAmount = 1000;
   const quoteAmount = 0;
-  const maxSoldiers = 10;
-  const amountPerSoldier = 100;
 
   useEffect(() => {
     /* Example URL: http://localhost:3000/backtest
@@ -74,7 +77,7 @@ const useMapMarketData: marketDataMapper = ({
       });
       setData(marketData);
     })();
-  }, [startDate, endDate, short]);
+  }, [startDate, endDate, short, baseAmount, maxSoldiers, amountPerSoldier]);
 
   return data;
 };
