@@ -20,6 +20,8 @@ const BackOptions = () => {
     setAmountPerSoldier,
   } = React.useContext(BacktestContext);
 
+  const [ratio, setRatio] = React.useState(false);
+
   const startDate = new Date(startTimestamp).toISOString().split("T")[0];
   const endDate = new Date(endTimestamp).toISOString().split("T")[0];
 
@@ -36,6 +38,24 @@ const BackOptions = () => {
     const { name, checked } = e.target;
     if (name === "short") {
       setShort(checked);
+    }
+  };
+
+  const amountChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    if (name === "max-soldiers") {
+      if (ratio) {
+        setBaseAmount(Number(value) * amountPerSoldier);
+      }
+      setMaxSoldiers(Number(value));
+    } else if (name === "base-amount") {
+      if (ratio) return;
+      setBaseAmount(Number(value));
+    } else if (name === "amount-per-soldier") {
+      if (ratio) {
+        setBaseAmount(Number(value) * maxSoldiers);
+      }
+      setAmountPerSoldier(Number(value));
     }
   };
 
@@ -82,20 +102,33 @@ const BackOptions = () => {
             name="max-soldiers"
             min={1}
             value={maxSoldiers}
-            onChange={(e) => setMaxSoldiers(Number(e.target.value))}
+            onChange={amountChangeHandler}
           />
         </label>
         <label htmlFor="base-amount">
           <span>Base Amount</span>
-          <input
-            type="number"
-            id="base-amount"
-            name="base-amount"
-            min={100}
-            step={100}
-            value={baseAmount}
-            onChange={(e) => setBaseAmount(Number(e.target.value))}
-          />
+          <BaseAmountWrapper>
+            <input
+              disabled={ratio}
+              type="number"
+              id="base-amount"
+              name="base-amount"
+              min={100}
+              step={100}
+              value={baseAmount}
+              onChange={amountChangeHandler}
+            />
+            <RatioCheck>
+              <span>Fix Ratio</span>
+              <input
+                type="checkbox"
+                id="ratio-check"
+                name="ratio"
+                checked={ratio}
+                onChange={(e) => setRatio(e.target.checked)}
+              />
+            </RatioCheck>
+          </BaseAmountWrapper>
         </label>
         <label htmlFor="amount-per-soldier">
           <span>Amount Per Soldier</span>
@@ -104,8 +137,9 @@ const BackOptions = () => {
             id="amount-per-soldier"
             name="amount-per-soldier"
             min={10}
+            step={10}
             value={amountPerSoldier}
-            onChange={(e) => setAmountPerSoldier(Number(e.target.value))}
+            onChange={amountChangeHandler}
           />
         </label>
       </FieldSetAnimated>
@@ -127,7 +161,7 @@ const FieldSet = styled.fieldset`
   flex-direction: row;
   flex: 1;
   gap: 32px;
-  & label span {
+  & label > span {
     display: block;
   }
 `;
@@ -146,6 +180,23 @@ const slideInFromRight = keyframes`
 const FieldSetAnimated = styled(FieldSet)`
   transform: translateX(150%);
   animation: ${slideInFromRight} 0.7s ease-out both;
+`;
+
+const BaseAmountWrapper = styled.div`
+  position: relative;
+`;
+const RatioCheck = styled.div`
+  position: absolute;
+  right: 24px;
+  top: 0;
+  bottom: 0;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  & > input {
+    margin-bottom: -1px;
+  }
 `;
 
 export default BackOptions;
