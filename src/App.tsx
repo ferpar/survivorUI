@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import BackTest from "./components/Backtest";
+import { Routes, Route, Link, Outlet } from "react-router-dom";
 
 function App() {
   return (
@@ -8,13 +9,17 @@ function App() {
         <h1>Survivor Alpha 0.1</h1>
         <Nav>
           <ol>
-            <li>Home</li> {/* acquire datasets */}
-            <li>Backtest</li>
-            <li>Live</li>
+            <StLink to="/">Home</StLink> {/* acquire datasets */}
+            <StLink to="/backtest">Backtest</StLink>
+            <StLink to="/live">Live</StLink>
           </ol>
         </Nav>
       </Header>
-      <BackTest />
+      <Routes>
+        <Route path="/" element={<h1>Home</h1>} />
+        <Route path="/backtest" element={<BackTest />} />
+        <Route path="/live" element={<h1>Live</h1>} />
+      </Routes>
     </Main>
   );
 }
@@ -27,7 +32,7 @@ const Main = styled.main`
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: start;
   padding: 2rem 32px;
 `;
 
@@ -51,13 +56,15 @@ const Nav = styled.nav`
     align-items: center;
     list-style: none;
     width: 100%;
-    & li {
-      font-size: 1.5rem;
-      font-weight: 600;
-      cursor: pointer;
-      &:hover {
-        color: #ff0000;
-      }
-    }
+  }
+`;
+
+const StLink = styled(Link)`
+  color: black;
+  font-size: 1.5rem;
+  font-weight: 600;
+  cursor: pointer;
+  &:hover {
+    color: #ff0000;
   }
 `;
