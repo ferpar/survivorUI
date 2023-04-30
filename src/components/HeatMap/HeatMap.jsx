@@ -98,6 +98,7 @@ const HeatMap = ({}) => {
       .join("div")
       .attr("class", "tooltip")
       .style("position", "absolute")
+      .style("top", 0)
       .style("background-color", "white")
       .style("padding", "5px")
       .style("border", "1px solid black")
