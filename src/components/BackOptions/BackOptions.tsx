@@ -147,8 +147,8 @@ const BackOptions = () => {
             type="number"
             id="amount-per-soldier"
             name="amount-per-soldier"
-            min={10}
-            step={10}
+            min={100}
+            step={100}
             value={amountPerSoldier}
             onChange={amountChangeHandler}
           />
