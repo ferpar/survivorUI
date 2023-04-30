@@ -92,6 +92,7 @@ const BackOptions = () => {
             id="base-amount"
             name="base-amount"
             min={100}
+            step={100}
             value={baseAmount}
             onChange={(e) => setBaseAmount(Number(e.target.value))}
           />
@@ -134,15 +135,17 @@ const FieldSet = styled.fieldset`
 const slideInFromRight = keyframes`
     0% {
       transform: translateX(150%);
+      opacity: 0;
     }
     100% {
       transform: translateX(0);
+      opacity: 1;
     }
 `;
 
 const FieldSetAnimated = styled(FieldSet)`
   transform: translateX(150%);
-  animation: ${slideInFromRight} 0.5s ease-out both;
+  animation: ${slideInFromRight} 0.7s ease-out both;
 `;
 
 export default BackOptions;
