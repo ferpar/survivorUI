@@ -20,7 +20,7 @@ const BackOptions = () => {
     setAmountPerSoldier,
   } = React.useContext(BacktestContext);
 
-  const [ratio, setRatio] = React.useState(false);
+  const [ratio, setRatio] = React.useState(0);
 
   const startDate = new Date(startTimestamp).toISOString().split("T")[0];
   const endDate = new Date(endTimestamp).toISOString().split("T")[0];
@@ -45,7 +45,7 @@ const BackOptions = () => {
     const { name, value } = e.target;
     if (name === "max-soldiers") {
       if (ratio) {
-        setBaseAmount(Number(value) * amountPerSoldier);
+        setBaseAmount((Number(value) * amountPerSoldier) / ratio);
       }
       setMaxSoldiers(Number(value));
     } else if (name === "base-amount") {
@@ -53,9 +53,20 @@ const BackOptions = () => {
       setBaseAmount(Number(value));
     } else if (name === "amount-per-soldier") {
       if (ratio) {
-        setBaseAmount(Number(value) * maxSoldiers);
+        setBaseAmount((Number(value) * maxSoldiers) / ratio);
       }
       setAmountPerSoldier(Number(value));
+    }
+  };
+
+  const checkRatioHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, checked } = e.target;
+    if (name === "ratio") {
+      if (checked) {
+        setRatio((maxSoldiers * amountPerSoldier) / baseAmount);
+      } else {
+        setRatio(0);
+      }
     }
   };
 
@@ -124,8 +135,8 @@ const BackOptions = () => {
                 type="checkbox"
                 id="ratio-check"
                 name="ratio"
-                checked={ratio}
-                onChange={(e) => setRatio(e.target.checked)}
+                checked={!!ratio}
+                onChange={checkRatioHandler}
               />
             </RatioCheck>
           </BaseAmountWrapper>
