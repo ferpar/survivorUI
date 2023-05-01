@@ -61,6 +61,13 @@ export interface HeatMapData {
   data: DataPoint[];
   limitLabels: number[];
   stopLabels: number[];
+  stats: {
+    min: number;
+    max: number;
+    mean: number;
+    median: number;
+    std: number;
+  };
 }
 
 const fetchJson = async (url: string) => {
@@ -136,10 +143,28 @@ const useHeatMapData: useHeatMapData = ({
         }
       );
 
+      const plArray = heatMapDataPoints.map((point) => point.profitLoss);
+
+      const min = Math.min(...plArray);
+      const max = Math.max(...plArray);
+      const mean = plArray.reduce((a, b) => a + b, 0) / plArray.length;
+      const median = [...plArray].sort()[Math.floor(plArray.length / 2)];
+      const std = Math.sqrt(
+        plArray.map((x) => Math.pow(x - mean, 2)).reduce((a, b) => a + b, 0) /
+          plArray.length
+      ); // standard deviation
+
       const newHeatMapData: HeatMapData = {
         data: heatMapDataPoints,
         limitLabels: labels.limit,
         stopLabels: labels.stop,
+        stats: {
+          min,
+          max,
+          mean,
+          median,
+          std,
+        },
       };
 
       setHeatMapData(newHeatMapData);

@@ -3,6 +3,7 @@ import BackOptions from "../BackOptions";
 import BackResults from "../BackResults";
 import ErrorBoundary from "../../core/ErrorBoundary";
 import BacktestProvider from "../../core/Providers/BacktestProvider";
+import SideSummary from "../SideSummary";
 
 const Backtest = () => {
   return (
@@ -11,6 +12,7 @@ const Backtest = () => {
         <BacktestProvider>
           <BackOptions />
           <BackResults />
+          <SideSummary />
         </BacktestProvider>
       </ErrorBoundary>
     </Wrapper>
@@ -18,6 +20,7 @@ const Backtest = () => {
 };
 
 const Wrapper = styled.div`
+  position: relative;
   width: 100%;
   height: 100%;
   display: flex;
