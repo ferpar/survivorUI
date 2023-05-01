@@ -126,7 +126,7 @@ const BackOptions = () => {
               name="base-amount"
               min={100}
               step={100}
-              value={baseAmount}
+              value={baseAmount.toFixed(2)}
               onChange={amountChangeHandler}
             />
             <RatioCheck>

@@ -76,7 +76,7 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   padding: 1rem 16px;
-  border-radius: 5px;
+  border-radius: 0 5px 5px 5px;
 `;
 
 const ToggleButton = styled.button`
