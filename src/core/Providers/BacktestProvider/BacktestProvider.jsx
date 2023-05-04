@@ -14,6 +14,8 @@ const initialState = {
   maxSoldiers: 10, //max soldiers per squad
   baseAmount: 1000, //initial base capital amount per squad
   amountPerSoldier: 100, //initial amount per soldier
+  stop: 0.1, //stop loss
+  limit: 0.5, //take profit
 };
 
 // timestamp for start and end date at initialState in milliseconds
@@ -32,6 +34,10 @@ function reducer(state, action) {
       return { ...state, baseAmount: action.payload };
     case "amountPerSoldier":
       return { ...state, amountPerSoldier: action.payload };
+    case "stop":
+      return { ...state, stop: action.payload };
+    case "limit":
+      return { ...state, limit: action.payload };
     default:
       throw new Error();
   }
@@ -50,6 +56,8 @@ const BacktestProvider = ({ children }) => {
     dispatch({ type: "baseAmount", payload: baseAmount });
   const setAmountPerSoldier = (amountPerSoldier) =>
     dispatch({ type: "amountPerSoldier", payload: amountPerSoldier });
+  const setStop = (stop) => dispatch({ type: "stop", payload: stop });
+  const setLimit = (limit) => dispatch({ type: "limit", payload: limit });
 
   const marketData = useMapMarketData(formState);
   const heatMapData = useHeatmapData(formState);
@@ -66,6 +74,8 @@ const BacktestProvider = ({ children }) => {
         setMaxSoldiers,
         setBaseAmount,
         setAmountPerSoldier,
+        setStop,
+        setLimit,
       }}
     >
       {children}

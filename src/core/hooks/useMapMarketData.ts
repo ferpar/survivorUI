@@ -17,6 +17,8 @@ type marketDataMapper = (formState: {
   baseAmount: number;
   maxSoldiers: number;
   amountPerSoldier: number;
+  stop: number;
+  limit: number;
 }) => MarketDatum[];
 
 const fetchJson = async (url: string) => {
@@ -32,12 +34,12 @@ const useMapMarketData: marketDataMapper = ({
   baseAmount = 1000,
   maxSoldiers = 10,
   amountPerSoldier = 100,
+  stop = 0.1,
+  limit = 0.5,
 }) => {
   const [data, setData] = useState<MarketDatum[]>([]);
 
   // Parameters for the backtest
-  const stop = 0.9;
-  const limit = 1.1;
   const startTimestamp = new Date(startDate).getTime();
   const endTimestamp = new Date(endDate).getTime();
   const quoteAmount = 0;
