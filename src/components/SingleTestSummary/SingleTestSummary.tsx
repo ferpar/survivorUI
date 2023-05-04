@@ -15,7 +15,6 @@ const SingleTestSummary = () => {
   const context = React.useContext(BacktestContext);
 
   if (!context?.marketData.squads) return null;
-  console.log(context);
   const {
     formState: { stop, limit },
     setStop,

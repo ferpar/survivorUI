@@ -1,13 +1,15 @@
 import styled from "styled-components";
 import CandleChart from "../CandleChart/CandleChart";
 import HeatMap from "../HeatMap/HeatMap";
-import StopLimitInput from "../SingleTestSummary";
+import SingleTestSummary from "../SingleTestSummary";
+import WalletView from "../WalletView";
 
 function RunAnalyzer() {
   return (
     <Wrapper>
       <CandleChart />
-      <StopLimitInput />
+      <SingleTestSummary />
+      <WalletView />
       <HeatMap />
     </Wrapper>
   );
@@ -19,7 +21,8 @@ const Wrapper = styled.div`
   height: 100%;
   display: flex;
   flex-direction: column;
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: visible;
 `;
 
 export default RunAnalyzer;
