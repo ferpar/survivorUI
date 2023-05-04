@@ -3,7 +3,7 @@ import styled, { keyframes, css } from "styled-components";
 import { BacktestContext } from "../../core/Providers/BacktestProvider";
 
 const SideSummary = () => {
-  const [visible, setVisible] = React.useState(true);
+  const [visible, setVisible] = React.useState(null);
   const context = React.useContext(BacktestContext);
 
   if (!context?.heatMapData?.stats) return null;
@@ -58,6 +58,20 @@ const slideIn = keyframes`
   }
 `;
 
+const entry = keyframes`
+  from {
+    transform: translateX(+120%);
+  }
+  to {
+    transform: translateX(+80%);
+  }
+`;
+
+const entryAnim = css`
+  animation: ${entry} 0.5s ease-out both;
+  animation-delay: 0.5s;
+`;
+
 const slideOutAnim = css`
   animation: ${slideOut} 0.5s ease-in forwards;
 `;
@@ -71,8 +85,13 @@ const Wrapper = styled.div`
   background-color: #eee;
   right: 0;
   top: 0;
-  transform: translateX(-100%);
-  ${(props) => (props?.visible ? slideInAnim : slideOutAnim)};
+  transform: translateX(80%);
+  ${(props) =>
+    props?.visible === null
+      ? entryAnim
+      : props?.visible
+      ? slideInAnim
+      : slideOutAnim};
   display: flex;
   flex-direction: column;
   padding: 1rem 16px;
