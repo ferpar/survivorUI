@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import CandleChart from "../CandleChart/CandleChart";
 import HeatMap from "../HeatMap/HeatMap";
-import StopLimitInput from "../StopLimitInput";
+import StopLimitInput from "../SingleTestSummary";
 
 function RunAnalyzer() {
   return (

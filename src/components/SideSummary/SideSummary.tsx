@@ -61,9 +61,11 @@ const slideIn = keyframes`
 const entry = keyframes`
   from {
     transform: translateX(+120%);
+    opacity: 0;
   }
   to {
     transform: translateX(+80%);
+    opacity: 1;
   }
 `;
 
