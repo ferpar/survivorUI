@@ -37,7 +37,7 @@ const useMapMarketData: marketDataMapper = ({
   stop = 0.1,
   limit = 0.5,
 }) => {
-  const [data, setData] = useState<MarketDatum[]>([]);
+  const [data, setData] = useState<any>({});
 
   // Parameters for the backtest
   const startTimestamp = new Date(startDate).getTime();
@@ -45,15 +45,6 @@ const useMapMarketData: marketDataMapper = ({
   const quoteAmount = 0;
 
   useEffect(() => {
-    /* Example URL: http://localhost:3000/backtest
-      ?stop=0.9&limit=1.1&
-      startTimestamp=1449446400000&
-      endTimestamp=1659225600000&
-      baseAmount=1000&
-      quoteAmount=0&
-      maxSoldiers=10&
-      amountPerSoldier=100&
-      short=false */
     // fetch data from API
     (async () => {
       const marketDataRawResponse: any = await fetchJson(
@@ -67,7 +58,7 @@ const useMapMarketData: marketDataMapper = ({
       const marketDataRaw: RawMarketDatum[] = marketDataRawResponse?.marketData;
 
       if (!marketDataRaw) return;
-      const marketData = marketDataRaw.map((market) => {
+      const marketDataDated = marketDataRaw.map((market) => {
         const [timestamp, open, high, low, close] = market;
         return {
           date: new Date(timestamp),
@@ -77,9 +68,18 @@ const useMapMarketData: marketDataMapper = ({
           close: close,
         };
       });
-      setData(marketData);
+      setData({ ...marketDataRawResponse, marketData: marketDataDated });
     })();
-  }, [startDate, endDate, short, baseAmount, maxSoldiers, amountPerSoldier]);
+  }, [
+    startDate,
+    endDate,
+    short,
+    baseAmount,
+    maxSoldiers,
+    amountPerSoldier,
+    stop,
+    limit,
+  ]);
 
   return data;
 };

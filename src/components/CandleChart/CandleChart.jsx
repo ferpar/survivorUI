@@ -30,7 +30,9 @@ const CandleChart = ({ withLogScale = true }) => {
     height: 0,
   };
 
-  const { marketData: data } = React.useContext(BacktestContext);
+  const {
+    marketData: { marketData: data },
+  } = React.useContext(BacktestContext);
 
   useEffect(() => {
     const svg = select(svgRef.current);
