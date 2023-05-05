@@ -51,19 +51,20 @@ const WalletView = () => {
     // transform object to array
     const ledgerEntries = Object.values(ledgerObject);
 
+    // update each price series entry with the balance at that date
+    // based on the ledger entries
     const balances = priceSeries.map((entry, idx) => {
-      const priorDateStr = priceSeries[idx - 1]?.date;
       const currentDateStr = entry.date;
-      //amount of quote in ledger at date
-      const ledgerEntry = !priorDateStr
-        ? ledgerEntries[0]
-        : ledgerEntries.find((ledgerEntry) => {
-            const entryDate = new Date(ledgerEntry.date);
-            const priorDate = new Date(priorDateStr);
-            const currentDate = new Date(currentDateStr);
-            // return entryDate >= priorDate && entryDate < currentDate;
-            return entryDate >= priorDate;
-          });
+      // amount of quote in ledger at date is found in latest ledger entry
+      // with date <= current date
+      let ledgerEntry = ledgerEntries
+        .filter((entry) => new Date(entry.date) <= new Date(currentDateStr))
+        .pop();
+      // if no such ledger entry found, use the last one
+      // useful at the end of the series
+      if (!ledgerEntry) {
+        ledgerEntry = ledgerEntries[ledgerEntries.length - 1];
+      }
       return {
         quote: ledgerEntry.quote,
         base: ledgerEntry.base,
@@ -72,7 +73,7 @@ const WalletView = () => {
       };
     });
 
-    // drawing instructions
+    // graphical instructions
     const svg = select(svgRef.current);
 
     const xScale = scaleTime()
