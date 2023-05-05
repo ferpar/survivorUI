@@ -93,15 +93,16 @@ const HeatMap = ({}) => {
       .style("cursor", "pointer");
 
     const tooltip = select("body")
-      .selectAll(".tooltip")
+      .selectAll(".tooltip-heatmap")
       .data([null])
       .join("div")
-      .attr("class", "tooltip")
+      .attr("class", "tooltip-heatmap")
       .style("position", "absolute")
       .style("top", 0)
       .style("background-color", "white")
       .style("padding", "5px")
       .style("border", "1px solid black")
+      .style("border-radius", "5px")
       .style("opacity", 0);
 
     const tooltipDisplacement = { x: 20, y: -60 };
