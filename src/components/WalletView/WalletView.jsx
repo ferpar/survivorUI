@@ -134,6 +134,7 @@ const WalletView = () => {
       },
     ];
 
+    // create an area for each entry in the ledgerAreas array
     ledgerContainer
       .selectAll(".ledger-area")
       .data(ledgerAreas)
@@ -194,7 +195,7 @@ const WalletView = () => {
 
     const getTooltipDisplacement = (event) => {
       const tooFarRight = event.pageX + maxTooltipWidth > width;
-      return { x: tooFarRight ? -maxTooltipWidth : 20, y: -80 };
+      return { x: tooFarRight ? -maxTooltipWidth : 20, y: -120 };
     };
 
     ledgerRects

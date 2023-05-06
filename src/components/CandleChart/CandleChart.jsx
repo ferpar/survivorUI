@@ -105,6 +105,100 @@ const CandleChart = ({ withLogScale = true }) => {
       .attr("class", "y-axis")
       .attr("transform", `translate(${margins.left}, 0)`)
       .call(axisLeft(yScale));
+
+    // Gridlines
+    // svg
+    //   .selectAll(".gridline")
+    //   .data(data)
+    //   .join("line")
+    //   .attr("class", "gridline")
+    //   .attr("x1", (d) => xScale(d.date))
+    //   .attr("x2", (d) => xScale(d.date))
+    //   .attr("y1", margins.top)
+    //   .attr("y2", height - margins.bottom)
+    //   .attr("stroke-width", 0.5)
+    //   .attr("stroke", "lightgray");
+
+    // create rectangle for each candle, with y = 0 as base
+    const rectangles = candleContainer
+      .selectAll(".tooltip-rect")
+      .data(data)
+      .join("rect")
+      .attr("class", "tooltip-rect")
+      .attr("x", (d) => xScale(d.date))
+      .attr("y", (d) => yScale(d.high))
+      .attr("width", candleWidth)
+      .attr("height", (d) => height - margins.bottom - yScale(d.high))
+      .attr("fill", "transparent")
+      .attr("stroke", "blue")
+      .attr("opacity", 0);
+
+    // Hover effect
+    rectangles
+      .on("mouseover", (event, d) => {
+        select(event.target).attr("opacity", 0.5);
+      })
+      .on("mouseout", (event, d) => {
+        select(event.target).attr("opacity", 0);
+      });
+
+    // Tooltip
+    const maxTooltipWidth = 200;
+    const tooltip = select("body")
+      .selectAll(".tooltip-candles")
+      .data([null])
+      .join("div")
+      .attr("class", "tooltip-candles")
+      .style("position", "absolute")
+      .style("top", 0)
+      .style("background-color", "white")
+      .style("width", maxTooltipWidth + "px")
+      .style("padding", "5px")
+      .style("border", "1px solid black")
+      .style("border-radius", "5px")
+      .style("opacity", 0)
+      .style("pointer-events", "none");
+
+    const getTooltipDisplacement = (event) => {
+      const tooFarRight = event.pageX + maxTooltipWidth > width;
+      return { x: tooFarRight ? -maxTooltipWidth : 20, y: -140 };
+    };
+
+    rectangles
+      .on("mouseenter", (event, d) => {
+        const date = new Date(d.date);
+        const dateStr = date.toLocaleDateString("en-US", {
+          month: "short",
+          day: "numeric",
+          year: "numeric",
+        });
+        const precision = 5;
+        const open = d.open.toFixed(precision);
+        const high = d.high.toFixed(precision);
+        const low = d.low.toFixed(precision);
+        const close = d.close.toFixed(precision);
+        const tooltipHTML = `
+          <div>Date: ${dateStr}</div>
+          <div>Open: ${open}</div>
+          <div>High: ${high}</div>
+          <div>Low: ${low}</div>
+          <div>Close: ${close}</div>
+        `;
+        tooltip
+          .style("opacity", 1)
+          .style("display", "block")
+          .style("left", event.pageX + getTooltipDisplacement(event).x + "px")
+          .style("top", event.pageY + getTooltipDisplacement(event).y + "px")
+          .html(tooltipHTML);
+      })
+      .on("mouseleave", (event, d) => {
+        tooltip.style("opacity", 0).style("display", "none");
+      })
+      .on("mousemove", (event, d) => {
+        tooltip
+          .style("left", event.pageX + getTooltipDisplacement(event).x + "px")
+          .style("top", event.pageY + getTooltipDisplacement(event).y + "px");
+      });
   }, [data, dimensions, margins, withLogScale]);
 
   return (
