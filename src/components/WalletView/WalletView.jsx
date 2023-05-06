@@ -216,7 +216,7 @@ const WalletView = () => {
           .style("display", "block")
           .style("left", event.pageX + tooltipDisplacement.x + "px")
           .style("top", event.pageY + tooltipDisplacement.y + "px")
-          .html(`<p>Balance: ${balance}</p> 
+          .html(`<p>Balance: ${balance} (open)</p> 
           <p>Quote: ${quote}</p>
           <p>Base Balance: ${d.base.toFixed(2)}</p>
           <p>at ${dateStr}</p>`);

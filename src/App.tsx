@@ -6,7 +6,7 @@ function App() {
   return (
     <Main>
       <Header>
-        <h1>Survivor Alpha 0.1</h1>
+        <h1>Survivor Alpha 0.2</h1>
         <Nav>
           <ol>
             <StLink to="/">Home</StLink> {/* acquire datasets */}
