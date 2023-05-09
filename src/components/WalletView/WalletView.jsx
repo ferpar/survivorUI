@@ -43,20 +43,9 @@ const WalletView = () => {
     if (!dimensions) return;
     if (!priceSeries || !wallet || !squads || !ledger) return;
 
-    // object with date as keys and array of transactions as values
-    const transactionsByDate = wallet.transactions.reduce((acc, entry) => {
-      const date = entry.date;
-      if (!acc[date]) {
-        acc[date] = [];
-      }
-      acc[date].push(entry);
-      return acc;
-    }, {});
-
-    // array of transactions
-    const transactionsArray = Object.values(transactionsByDate);
-
     // data preprocessing
+
+    // Ledger
     // using an object to avoid duplicates
     const ledgerObject = ledger.reduce((acc, entry) => {
       acc[entry.date] = entry;
@@ -87,6 +76,78 @@ const WalletView = () => {
         id: idx,
       };
     });
+
+    // Transactions
+    // object with date as keys and array of transactions as values
+    const transactionsByDate = wallet.transactions.reduce((acc, entry) => {
+      const date = entry.date;
+      if (!acc[date]) {
+        acc[date] = [];
+      }
+      acc[date].push(entry);
+      return acc;
+    }, {});
+
+    // array of transactions
+    const transactionsArray = Object.values(transactionsByDate);
+
+    const transactionsSummary = transactionsArray.map((entry, idx) => {
+      const periodSummary = [];
+      const date = entry[0].date;
+      const numberOfBuys = entry.filter((entry) => entry.type === "buy").length;
+      const numberOfSells = entry.filter(
+        (entry) => entry.type === "sell"
+      ).length;
+      const numberOfShorts = entry.filter(
+        (entry) => entry.type === "short"
+      ).length;
+      const numberOfCovers = entry.filter(
+        (entry) => entry.type === "shortCover"
+      ).length;
+      const nextDateIndex = priceSeries.findIndex(
+        (entry) => new Date(entry.date).getTime() === new Date(date).getTime()
+      );
+      const nextDate = priceSeries[nextDateIndex + 1]?.date;
+
+      if (numberOfBuys > 0) {
+        periodSummary.push({
+          date: date,
+          type: "buy",
+          amount: numberOfBuys,
+          nextDate: nextDate,
+        });
+      }
+
+      if (numberOfSells > 0) {
+        periodSummary.push({
+          date: date,
+          type: "sell",
+          amount: numberOfSells,
+          nextDate: nextDate,
+        });
+      }
+
+      if (numberOfShorts > 0) {
+        periodSummary.push({
+          date: date,
+          type: "short",
+          amount: numberOfShorts,
+          nextDate: nextDate,
+        });
+      }
+
+      if (numberOfCovers > 0) {
+        periodSummary.push({
+          date: date,
+          type: "shortCover",
+          amount: numberOfCovers,
+          nextDate: nextDate,
+        });
+      }
+
+      return periodSummary;
+    });
+    console.log(transactionsSummary);
 
     // graphical instructions
     const svg = select(svgRef.current);
@@ -247,9 +308,11 @@ const WalletView = () => {
       });
 
     // create a group for each transaction date
+    console.log(transactionsArray);
+    console.log(transactionsSummary);
     const transactionGroups = ledgerContainer
       .selectAll(".transaction-group")
-      .data(transactionsArray)
+      .data(transactionsSummary)
       .join("g")
       .attr("class", "transaction-group")
       .attr("transform", (d) => `translate(${xScale(new Date(d[0].date))}, 0)`);
@@ -260,18 +323,40 @@ const WalletView = () => {
       .data((d) => d)
       .join("rect")
       .attr("class", "transaction-rect")
-      .attr("x", (d) => 0)
+      .attr("x", 0)
       .attr("y", (d) => {
         if (d.type === "buy" || d.type === "short") return yScale(0);
         return yScale(0) + transactionsBarHeight / 2;
       })
-      .attr("width", (d) => width / balances.length)
+      .attr("width", (d) => {
+        if (d.nextDate) {
+          return xScale(new Date(d.nextDate)) - xScale(new Date(d.date));
+        }
+        return width / balances.length;
+      })
       .attr("height", transactionsBarHeight / 2)
       .style("fill", (d) => {
         if (d.type === "buy") return "green";
         if (d.type === "sell") return "red";
         return "black";
       });
+
+    const transactionTexts = transactionGroups
+      .selectAll(".transaction-text")
+      .data((d) => d)
+      .join("text")
+      .attr("class", "transaction-text")
+      .attr("x", 0)
+      .attr("y", (d) => {
+        if (d.type === "buy" || d.type === "short") return yScale(0);
+        return yScale(0) + transactionsBarHeight / 2;
+      })
+      .attr("dx", 5)
+      .attr("dy", 15)
+      .text((d) => d.amount)
+      .style("fill", "white")
+      .style("font-size", "12px")
+      .style("font-weight", "bold");
   }, [dimensions, priceSeries, wallet, squads, ledger]);
 
   return (
