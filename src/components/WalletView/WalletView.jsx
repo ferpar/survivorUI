@@ -22,6 +22,8 @@ const margins = {
   left: 40,
 };
 
+const transactionsBarHeight = 40;
+
 const WalletView = () => {
   const wrapperRef = React.useRef();
   const svgRef = React.useRef();
@@ -40,6 +42,19 @@ const WalletView = () => {
   React.useEffect(() => {
     if (!dimensions) return;
     if (!priceSeries || !wallet || !squads || !ledger) return;
+
+    // object with date as keys and array of transactions as values
+    const transactionsByDate = wallet.transactions.reduce((acc, entry) => {
+      const date = entry.date;
+      if (!acc[date]) {
+        acc[date] = [];
+      }
+      acc[date].push(entry);
+      return acc;
+    }, {});
+
+    // array of transactions
+    const transactionsArray = Object.values(transactionsByDate);
 
     // data preprocessing
     // using an object to avoid duplicates
@@ -82,7 +97,7 @@ const WalletView = () => {
 
     const yScale = scaleLinear()
       .domain([0, max(balances, (d) => d.balance)])
-      .range([height - margins.bottom, margins.top]);
+      .range([height - margins.bottom - transactionsBarHeight, margins.top]);
 
     const xAxis = axisBottom(xScale);
     svg
@@ -229,6 +244,33 @@ const WalletView = () => {
         tooltip
           .style("left", event.pageX + tooltipDisplacement.x + "px")
           .style("top", event.pageY + tooltipDisplacement.y + "px");
+      });
+
+    // create a group for each transaction date
+    const transactionGroups = ledgerContainer
+      .selectAll(".transaction-group")
+      .data(transactionsArray)
+      .join("g")
+      .attr("class", "transaction-group")
+      .attr("transform", (d) => `translate(${xScale(new Date(d[0].date))}, 0)`);
+
+    // create a rect for each transaction in the group
+    const transactionRects = transactionGroups
+      .selectAll(".transaction-rect")
+      .data((d) => d)
+      .join("rect")
+      .attr("class", "transaction-rect")
+      .attr("x", (d) => 0)
+      .attr("y", (d) => {
+        if (d.type === "buy" || d.type === "short") return yScale(0);
+        return yScale(0) + transactionsBarHeight / 2;
+      })
+      .attr("width", (d) => width / balances.length)
+      .attr("height", transactionsBarHeight / 2)
+      .style("fill", (d) => {
+        if (d.type === "buy") return "green";
+        if (d.type === "sell") return "red";
+        return "black";
       });
   }, [dimensions, priceSeries, wallet, squads, ledger]);
 
