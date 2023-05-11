@@ -7,6 +7,7 @@ export default function drawTransactions({
   xScale,
   yScale,
   ledgerContainer,
+  setSelectedDate,
 }) {
   // create a group for each transaction date
   const transactionGroups = ledgerContainer
@@ -34,6 +35,7 @@ export default function drawTransactions({
       return width / balances.length;
     })
     .attr("height", transactionsBarHeight / 2)
+    .style("cursor", "pointer")
     .style("fill", (d) => {
       if (d.type === "buy") return "green";
       if (d.type === "sell") return "red";
@@ -107,5 +109,8 @@ export default function drawTransactions({
       tooltip
         .style("left", pageX + xOffset + "px")
         .style("top", pageY + yOffset + "px");
+    })
+    .on("click", (event, d) => {
+      setSelectedDate(new Date(d.date).getTime());
     });
 }

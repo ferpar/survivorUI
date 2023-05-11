@@ -1,18 +1,55 @@
 import React from "react";
 import styled, { css, keyframes } from "styled-components";
 
-const TransactionDetails = ({ transactionsByDate }) => {
-  console.log(transactionsByDate);
+const precision = 4;
+
+const TransactionDetails = ({ selectedDate, transactionsByDate }) => {
+  if (!transactionsByDate) return null;
   // open states: null, true or false
   const [open, setOpen] = React.useState(null);
-  const [selectedDate, setSelectedDate] = React.useState(null);
+  const transactionsSelectedDate = selectedDate
+    ? transactionsByDate[new Date(selectedDate).toISOString()]
+    : [];
   return (
     <DrawerWrapper open={open}>
       <Handle onClick={() => setOpen((openInt) => !openInt)}>
         {open ? ">>" : "<<"}
       </Handle>
-      <h3>test</h3>
-      <p>test</p>
+      <Contents>
+        <h3>
+          <span>
+            {selectedDate && transactionsSelectedDate.length > 0
+              ? new Date(selectedDate).toLocaleDateString()
+              : "no date selected"}
+          </span>{" "}
+        </h3>
+        {transactionsSelectedDate.map((transaction, idx) => (
+          <Transaction key={idx}>
+            <h4>Transaction {idx + 1}</h4>
+            <p>
+              Type: <span>{transaction.type}</span>
+            </p>
+            <p>
+              Base Amount: <span>{parseInt(transaction.baseAmount)}</span>
+            </p>
+            {transaction.quoteAmount && (
+              <p>
+                Quote: <span>{parseInt(transaction.quoteAmount)}</span>
+              </p>
+            )}
+            <p>
+              Transaction Price:{" "}
+              <span>{transaction.price.toPrecision(precision)}</span>
+            </p>
+            {transaction.entryPrice && (
+              <p>
+                Entry Price: &nbsp;
+                <span>{transaction.entryPrice.toPrecision(precision)}</span>
+              </p>
+            )}
+          </Transaction>
+        ))}
+      </Contents>
     </DrawerWrapper>
   );
 };
@@ -65,6 +102,20 @@ const Handle = styled.div`
   padding: 0.5rem;
   transform: translate(-100%, 0);
   cursor: pointer;
+`;
+
+const Contents = styled.div`
+  padding: 1rem;
+  overflow-y: scroll;
+  height: 100%;
+`;
+
+const Transaction = styled.div`
+  margin-top: 1rem;
+  &: not(: last-child) {
+    border-bottom: 1px solid black;
+    padding-bottom: 1rem;
+  }
 `;
 
 export default TransactionDetails;

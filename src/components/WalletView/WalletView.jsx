@@ -22,6 +22,7 @@ const margins = {
 const transactionsBarHeight = 40;
 
 const WalletView = () => {
+  const [selectedDate, setSelectedDate] = React.useState(null);
   const wrapperRef = React.useRef();
   const svgRef = React.useRef();
   const dimensions = useResizeObserver(wrapperRef);
@@ -72,6 +73,7 @@ const WalletView = () => {
       xScale,
       yScale,
       ledgerContainer,
+      setSelectedDate,
     };
 
     drawAxes(dependencyFrame);
@@ -83,7 +85,10 @@ const WalletView = () => {
   return (
     <ChartWrapper ref={wrapperRef}>
       <Chart ref={svgRef} />
-      <TransactionDetails transactionsByDate={transactionsByDate} />
+      <TransactionDetails
+        selectedDate={selectedDate}
+        transactionsByDate={transactionsByDate}
+      />
     </ChartWrapper>
   );
 };
