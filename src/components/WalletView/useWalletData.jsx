@@ -3,10 +3,12 @@ import React from "react";
 function useWalletData({ priceSeries, wallet, ledger }) {
   const [balances, setBalances] = React.useState(null);
   const [transactionsSummary, setTransactionsSummary] = React.useState(null);
+  const [transactionsByDate, setTransactionsByDate] = React.useState(null);
 
   React.useEffect(() => {
     if (!priceSeries || !wallet || !ledger) {
       setBalances(null);
+      setTransactionsByDate(null);
       setTransactionsSummary(null);
       return;
     }
@@ -114,11 +116,13 @@ function useWalletData({ priceSeries, wallet, ledger }) {
     });
 
     setBalances(balances);
+    setTransactionsByDate(transactionsByDate);
     setTransactionsSummary(transactionsSummary);
   }, [priceSeries, wallet, ledger]);
 
   return {
     balances,
+    transactionsByDate,
     transactionsSummary,
   };
 }

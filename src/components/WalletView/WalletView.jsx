@@ -4,6 +4,7 @@ import { scaleLinear, scaleTime, select, extent, max } from "d3";
 import useResizeObserver from "../../core/hooks/useResizeObserver";
 import { ChartWrapper, Chart } from "./WalletView.styled";
 import useWalletData from "./useWalletData";
+import TransactionDetails from "./TransactionDetails";
 import {
   drawAxes,
   drawAreas,
@@ -34,7 +35,7 @@ const WalletView = () => {
   const wallet = context?.marketData?.wallet;
   const ledger = context?.marketData?.wallet?.ledger;
 
-  const { balances, transactionsSummary } = useWalletData({
+  const { balances, transactionsByDate, transactionsSummary } = useWalletData({
     priceSeries,
     wallet,
     ledger,
@@ -82,6 +83,7 @@ const WalletView = () => {
   return (
     <ChartWrapper ref={wrapperRef}>
       <Chart ref={svgRef} />
+      <TransactionDetails transactionsByDate={transactionsByDate} />
     </ChartWrapper>
   );
 };
