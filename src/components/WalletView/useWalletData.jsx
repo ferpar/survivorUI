@@ -52,7 +52,6 @@ function useWalletData({ priceSeries, wallet, ledger }) {
       acc[date].push(entry);
       return acc;
     }, {});
-    console.log(transactionsByDate);
 
     // array of transactions
     const transactionsArray = Object.values(transactionsByDate);
