@@ -15,7 +15,7 @@ import {
 import useResizeObserver from "../../core/hooks/useResizeObserver";
 import { ChartWrapper, Chart } from "./WalletView.styled";
 import useWalletData from "./useWalletData";
-import { drawAxes } from "./instructions";
+import { drawAxes, drawAreas } from "./instructions";
 
 const margins = {
   top: 20,
@@ -62,62 +62,26 @@ const WalletView = () => {
       .domain([0, max(balances, (d) => d.balance)])
       .range([height - margins.bottom - transactionsBarHeight, margins.top]);
 
-    const dependencyFrame = {
-      margins,
-      transactionsBarHeight,
-      svg,
-      xScale,
-      yScale,
-      dimensions,
-      balances,
-      transactionsSummary,
-    };
-
-    drawAxes(dependencyFrame);
-
     const ledgerContainer = svg
       .selectAll(".wallet-container")
       .data([null])
       .join("g")
       .attr("class", "wallet-container");
 
-    // create an area path from the base amounts and y = 0 as base
-    const baseArea = area()
-      .x((d) => xScale(d.date))
-      .y0((d) => yScale(0))
-      .y1((d) => yScale(d.base))
-      .curve(curveStepAfter)(balances);
+    const dependencyFrame = {
+      balances,
+      transactionsSummary,
+      margins,
+      transactionsBarHeight,
+      dimensions,
+      svg,
+      xScale,
+      yScale,
+      ledgerContainer,
+    };
 
-    const quoteArea = area()
-      .x((d) => xScale(d.date))
-      .y0((d) => yScale(d.base))
-      .y1((d) => yScale(d.balance))
-      .curve(curveStepAfter)(balances);
-
-    const ledgerAreas = [
-      {
-        name: "base",
-        area: baseArea,
-        color: "green",
-      },
-      {
-        name: "quote",
-        area: quoteArea,
-        color: "red",
-      },
-    ];
-
-    // create an area for each entry in the ledgerAreas array
-    ledgerContainer
-      .selectAll(".ledger-area")
-      .data(ledgerAreas)
-      .join("path")
-      .attr("class", "ledger-area")
-      .attr("fill", "green")
-      .attr("opacity", 0.5)
-      .attr("d", baseArea)
-      .attr("d", (d) => d.area)
-      .attr("fill", (d) => d.color);
+    drawAxes(dependencyFrame);
+    drawAreas(dependencyFrame);
 
     // create a rect for each entry in the balances array x0 = date, x1 = next date, y0 = 0, y1 = balance
     const ledgerRects = ledgerContainer
