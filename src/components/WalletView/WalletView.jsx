@@ -15,6 +15,7 @@ import {
 import useResizeObserver from "../../core/hooks/useResizeObserver";
 import { ChartWrapper, Chart } from "./WalletView.styled";
 import useWalletData from "./useWalletData";
+import { drawAxes } from "./instructions";
 
 const margins = {
   top: 20,
@@ -37,7 +38,7 @@ const WalletView = () => {
   const context = React.useContext(BacktestContext);
   const priceSeries = context?.marketData?.marketData;
   const wallet = context?.marketData?.wallet;
-  const squads = context?.marketData?.squads;
+  // const squads = context?.marketData?.squads;
   const ledger = context?.marketData?.wallet?.ledger;
 
   const { balances, transactionsSummary } = useWalletData({
@@ -61,23 +62,18 @@ const WalletView = () => {
       .domain([0, max(balances, (d) => d.balance)])
       .range([height - margins.bottom - transactionsBarHeight, margins.top]);
 
-    const xAxis = axisBottom(xScale);
-    svg
-      .selectAll(".x-axis")
-      .data([null])
-      .join("g")
-      .attr("class", "x-axis")
-      .attr("transform", `translate(0, ${height - margins.bottom})`)
-      .call(xAxis);
+    const dependencyFrame = {
+      margins,
+      transactionsBarHeight,
+      svg,
+      xScale,
+      yScale,
+      dimensions,
+      balances,
+      transactionsSummary,
+    };
 
-    const yAxis = axisLeft(yScale);
-    svg
-      .selectAll(".y-axis")
-      .data([null])
-      .join("g")
-      .attr("class", "y-axis")
-      .attr("transform", `translate(${margins.left}, 0)`)
-      .call(yAxis);
+    drawAxes(dependencyFrame);
 
     const ledgerContainer = svg
       .selectAll(".wallet-container")
@@ -256,7 +252,7 @@ const WalletView = () => {
       .style("fill", "white")
       .style("font-size", "12px")
       .style("font-weight", "bold");
-  }, [dimensions, priceSeries, wallet, squads, ledger]);
+  }, [dimensions, priceSeries, wallet, ledger]);
 
   return (
     <ChartWrapper ref={wrapperRef}>
