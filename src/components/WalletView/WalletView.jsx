@@ -32,7 +32,6 @@ const WalletView = () => {
   const context = React.useContext(BacktestContext);
   const priceSeries = context?.marketData?.marketData;
   const wallet = context?.marketData?.wallet;
-  // const squads = context?.marketData?.squads;
   const ledger = context?.marketData?.wallet?.ledger;
 
   const { balances, transactionsSummary } = useWalletData({

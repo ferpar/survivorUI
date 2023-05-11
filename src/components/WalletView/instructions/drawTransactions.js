@@ -15,6 +15,7 @@ export default function drawTransactions({
     .join("g")
     .attr("class", "transaction-group")
     .attr("transform", (d) => `translate(${xScale(new Date(d[0].date))}, 0)`);
+
   // create a rect for each transaction in the group
   const transactionRects = transactionGroups
     .selectAll(".transaction-rect")
@@ -38,6 +39,7 @@ export default function drawTransactions({
       if (d.type === "sell") return "red";
       return "black";
     });
+
   transactionGroups
     .selectAll(".transaction-text")
     .data((d) => d)
