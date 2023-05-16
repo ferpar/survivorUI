@@ -7,9 +7,14 @@ export const BacktestContext = React.createContext({
   heatMapData: {},
 });
 
+const threeMonthsAgo = new Date(
+  new Date().setMonth(new Date().getMonth() - 3)
+).getTime();
+const now = new Date().getTime();
+
 const initialState = {
-  startDate: new Date("2021-02-18").getTime(),
-  endDate: new Date("2022-02-18").getTime(),
+  startDate: threeMonthsAgo,
+  endDate: now,
   short: false,
   maxSoldiers: 10, //max soldiers per squad
   baseAmount: 1000, //initial base capital amount per squad
