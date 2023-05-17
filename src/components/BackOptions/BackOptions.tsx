@@ -1,6 +1,8 @@
 import React from "react";
 import styled, { keyframes } from "styled-components";
 import { BacktestContext } from "../../core/Providers/BacktestProvider";
+// get the IBacktestContext interface
+import { IBacktestContext } from "../../core/Providers/BacktestProvider/BacktestProvider";
 
 const BackOptions = () => {
   const {
@@ -18,7 +20,7 @@ const BackOptions = () => {
     setMaxSoldiers,
     setQuoteAmount,
     setAmountPerSoldier,
-  } = React.useContext(BacktestContext);
+  }: IBacktestContext = React.useContext(BacktestContext);
 
   const [ratio, setRatio] = React.useState(0);
 

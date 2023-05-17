@@ -1,11 +1,48 @@
-import React from "react";
+import React, { ReactNode } from "react";
 import useHeatmapData from "../../hooks/useHeatMapData";
 import useMapMarketData from "../../hooks/useMapMarketData";
+import { FormState } from "../../hooks/hooks";
 
-export const BacktestContext = React.createContext({
+export interface IBacktestContext {
+  marketData: any;
+  heatMapData: any;
+  formState: FormState;
+  setStartDate: (startDate: number) => void;
+  setEndDate: (endDate: number) => void;
+  setShort: (short: boolean) => void;
+  setMaxSoldiers: (maxSoldiers: number) => void;
+  setQuoteAmount: (quoteAmount: number) => void;
+  setAmountPerSoldier: (amountPerSoldier: number) => void;
+  setStop: (stop: number) => void;
+  setLimit: (limit: number) => void;
+}
+
+const defaultContext: IBacktestContext = {
   marketData: {},
   heatMapData: {},
-});
+  formState: {
+    startDate: 0,
+    endDate: 0,
+    short: false,
+    maxSoldiers: 0,
+    quoteAmount: 0,
+    amountPerSoldier: 0,
+    stop: 0,
+    limit: 0,
+  },
+  setStartDate: () => {},
+  setEndDate: () => {},
+  setShort: () => {},
+  setMaxSoldiers: () => {},
+  setQuoteAmount: () => {},
+  setAmountPerSoldier: () => {},
+  setStop: () => {},
+  setLimit: () => {},
+};
+
+export const BacktestContext = React.createContext<
+  IBacktestContext | undefined
+>(defaultContext);
 
 const threeMonthsAgo = new Date(
   new Date().setMonth(new Date().getMonth() - 3)
@@ -25,7 +62,17 @@ const initialState = {
 
 // timestamp for start and end date at initialState in milliseconds
 
-function reducer(state, action) {
+type FormAction =
+  | { type: "startDate"; payload: number }
+  | { type: "endDate"; payload: number }
+  | { type: "short"; payload: boolean }
+  | { type: "maxSoldiers"; payload: number }
+  | { type: "quoteAmount"; payload: number }
+  | { type: "amountPerSoldier"; payload: number }
+  | { type: "stop"; payload: number }
+  | { type: "limit"; payload: number };
+
+function reducer(state: FormState, action: FormAction): FormState {
   switch (action.type) {
     case "startDate":
       return { ...state, startDate: action.payload };
@@ -48,21 +95,23 @@ function reducer(state, action) {
   }
 }
 
-const BacktestProvider = ({ children }) => {
+const BacktestProvider = ({ children }: { children: ReactNode }) => {
   const [formState, dispatch] = React.useReducer(reducer, initialState);
-  const setStartDate = (startDate) =>
+  const setStartDate = (startDate: number) =>
     dispatch({ type: "startDate", payload: startDate });
-  const setEndDate = (endDate) =>
+  const setEndDate = (endDate: number) =>
     dispatch({ type: "endDate", payload: endDate });
-  const setShort = (short) => dispatch({ type: "short", payload: short });
-  const setMaxSoldiers = (maxSoldiers) =>
+  const setShort = (short: boolean) =>
+    dispatch({ type: "short", payload: short });
+  const setMaxSoldiers = (maxSoldiers: number) =>
     dispatch({ type: "maxSoldiers", payload: maxSoldiers });
-  const setQuoteAmount = (quoteAmount) =>
+  const setQuoteAmount = (quoteAmount: number) =>
     dispatch({ type: "quoteAmount", payload: quoteAmount });
-  const setAmountPerSoldier = (amountPerSoldier) =>
+  const setAmountPerSoldier = (amountPerSoldier: number) =>
     dispatch({ type: "amountPerSoldier", payload: amountPerSoldier });
-  const setStop = (stop) => dispatch({ type: "stop", payload: stop });
-  const setLimit = (limit) => dispatch({ type: "limit", payload: limit });
+  const setStop = (stop: number) => dispatch({ type: "stop", payload: stop });
+  const setLimit = (limit: number) =>
+    dispatch({ type: "limit", payload: limit });
 
   const marketData = useMapMarketData(formState);
   const heatMapData = useHeatmapData(formState);
