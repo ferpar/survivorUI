@@ -75,8 +75,8 @@ const SingleTestSummary = () => {
                 </div>
                 <div>
                   <p>Balance: {squad?.wallet?.balance.toFixed(2)}</p>
-                  <p>Base Balance: {squad?.wallet?.baseBalance.toFixed(2)}</p>
                   <p>Quote Balance: {squad?.wallet?.quoteBalance.toFixed(2)}</p>
+                  <p>Base Balance: {squad?.wallet?.baseBalance.toFixed(2)}</p>
                 </div>
               </SquadSummary>
             </div>

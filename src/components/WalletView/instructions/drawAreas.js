@@ -7,27 +7,27 @@ export default function drawAreas({
   ledgerContainer,
 }) {
   // create an area path from the base amounts and y = 0 as base
-  const baseArea = area()
-    .x((d) => xScale(d.date))
-    .y0((d) => yScale(0))
-    .y1((d) => yScale(d.base))
-    .curve(curveStepAfter)(balances);
-
   const quoteArea = area()
     .x((d) => xScale(d.date))
-    .y0((d) => yScale(d.base))
+    .y0((d) => yScale(0))
+    .y1((d) => yScale(d.quote))
+    .curve(curveStepAfter)(balances);
+
+  const baseArea = area()
+    .x((d) => xScale(d.date))
+    .y0((d) => yScale(d.quote))
     .y1((d) => yScale(d.balance))
     .curve(curveStepAfter)(balances);
 
   const ledgerAreas = [
     {
-      name: "base",
-      area: baseArea,
+      name: "quote",
+      area: quoteArea,
       color: "green",
     },
     {
-      name: "quote",
-      area: quoteArea,
+      name: "base",
+      area: baseArea,
       color: "red",
     },
   ];

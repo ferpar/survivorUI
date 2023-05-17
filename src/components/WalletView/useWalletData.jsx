@@ -39,7 +39,7 @@ function useWalletData({ priceSeries, wallet, ledger }) {
         quote: ledgerEntry.quote,
         base: ledgerEntry.base,
         date: currentDateStr,
-        balance: ledgerEntry.quote * entry.open + ledgerEntry.base, // close or open??
+        balance: ledgerEntry.base * entry.open + ledgerEntry.quote, // close or open??
         id: idx,
       };
     });
