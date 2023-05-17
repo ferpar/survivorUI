@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { FormState } from "./hooks";
 
 interface BacktestConfig {
   margin: number;
@@ -74,15 +75,6 @@ const fetchJson = async (url: string) => {
   const response = await fetch(url);
   return response.json();
 };
-
-interface FormState {
-  startDate: number;
-  endDate: number;
-  short: boolean;
-  quoteAmount: number;
-  maxSoldiers: number;
-  amountPerSoldier: number;
-}
 
 type useHeatMapData = (formState: FormState) => HeatMapData;
 

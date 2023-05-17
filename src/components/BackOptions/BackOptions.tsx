@@ -120,7 +120,7 @@ const BackOptions = () => {
           <span>Quote Amount</span>
           <QuoteAmountWrapper>
             <input
-              disabled={ratio}
+              disabled={!!ratio}
               type="number"
               id="quote-amount"
               name="quote-amount"

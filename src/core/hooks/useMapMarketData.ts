@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { FormState } from "./hooks";
 
 type RawMarketDatum = [Date, number, number, number, number];
 
@@ -10,16 +11,7 @@ export interface MarketDatum {
   close: number;
 }
 
-type marketDataMapper = (formState: {
-  startDate: number;
-  endDate: number;
-  short: boolean;
-  quoteAmount: number;
-  maxSoldiers: number;
-  amountPerSoldier: number;
-  stop: number;
-  limit: number;
-}) => MarketDatum[];
+type marketDataMapper = (formState: FormState) => MarketDatum[];
 
 const fetchJson = async (url: string) => {
   const response = await fetch(url);
