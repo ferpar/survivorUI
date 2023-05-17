@@ -79,7 +79,7 @@ interface FormState {
   startDate: number;
   endDate: number;
   short: boolean;
-  baseAmount: number;
+  quoteAmount: number;
   maxSoldiers: number;
   amountPerSoldier: number;
 }
@@ -90,7 +90,7 @@ const useHeatMapData: useHeatMapData = ({
   startDate,
   endDate,
   short = false,
-  baseAmount = 1000,
+  quoteAmount: quoteAmount = 1000,
   maxSoldiers = 10,
   amountPerSoldier = 100,
 }) => {
@@ -100,22 +100,14 @@ const useHeatMapData: useHeatMapData = ({
 
   const startTimestamp = new Date(startDate).getTime();
   const endTimestamp = new Date(endDate).getTime();
-  const quoteAmount = 0;
+  const baseAmount = 0;
 
   useEffect(() => {
     (async () => {
-      /* Example url `http://localhost:3000/marginheatmap
-      ?startTimestamp=1449446400000&
-      endTimestamp=1659225600000&
-      baseAmount=1000&
-      quoteAmount=0&
-      maxSoldiers=10&
-      amountPerSoldier=100&
-      short=false`*/
       const heatMapDataRaw = await fetchJson(
         `http://localhost:3000/marginheatmap` +
-          `?startTimestamp=${startTimestamp}&endTimestamp=${endTimestamp}&baseAmount=${baseAmount}` +
-          `&quoteAmount=${quoteAmount}&maxSoldiers=${maxSoldiers}` +
+          `?startTimestamp=${startTimestamp}&endTimestamp=${endTimestamp}&quoteAmount=${quoteAmount}` +
+          `&baseAmount=${baseAmount}&maxSoldiers=${maxSoldiers}` +
           `&amountPerSoldier=${amountPerSoldier}&short=${short}`
       );
 
@@ -131,7 +123,7 @@ const useHeatMapData: useHeatMapData = ({
           return {
             limit: Number(Math.round(marginLimit * 100)),
             stop: Number(Math.round(marginStop * 100)),
-            profitLoss: balance / baseAmount,
+            profitLoss: balance / quoteAmount,
             baseBalance,
             quoteBalance,
             maxSoldiers,
@@ -169,7 +161,7 @@ const useHeatMapData: useHeatMapData = ({
 
       setHeatMapData(newHeatMapData);
     })();
-  }, [startDate, endDate, short, baseAmount, maxSoldiers, amountPerSoldier]);
+  }, [startDate, endDate, short, quoteAmount, maxSoldiers, amountPerSoldier]);
 
   return heatMapData;
 };

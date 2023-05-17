@@ -17,7 +17,7 @@ const initialState = {
   endDate: now,
   short: false,
   maxSoldiers: 10, //max soldiers per squad
-  baseAmount: 1000, //initial base capital amount per squad
+  quoteAmount: 1000, //initial Quote capital amount per squad
   amountPerSoldier: 100, //initial amount per soldier
   stop: 0.1, //stop loss
   limit: 0.5, //take profit
@@ -35,8 +35,8 @@ function reducer(state, action) {
       return { ...state, short: action.payload };
     case "maxSoldiers":
       return { ...state, maxSoldiers: action.payload };
-    case "baseAmount":
-      return { ...state, baseAmount: action.payload };
+    case "quoteAmount":
+      return { ...state, quoteAmount: action.payload };
     case "amountPerSoldier":
       return { ...state, amountPerSoldier: action.payload };
     case "stop":
@@ -57,8 +57,8 @@ const BacktestProvider = ({ children }) => {
   const setShort = (short) => dispatch({ type: "short", payload: short });
   const setMaxSoldiers = (maxSoldiers) =>
     dispatch({ type: "maxSoldiers", payload: maxSoldiers });
-  const setBaseAmount = (baseAmount) =>
-    dispatch({ type: "baseAmount", payload: baseAmount });
+  const setQuoteAmount = (quoteAmount) =>
+    dispatch({ type: "quoteAmount", payload: quoteAmount });
   const setAmountPerSoldier = (amountPerSoldier) =>
     dispatch({ type: "amountPerSoldier", payload: amountPerSoldier });
   const setStop = (stop) => dispatch({ type: "stop", payload: stop });
@@ -77,7 +77,7 @@ const BacktestProvider = ({ children }) => {
         setEndDate,
         setShort,
         setMaxSoldiers,
-        setBaseAmount,
+        setQuoteAmount,
         setAmountPerSoldier,
         setStop,
         setLimit,

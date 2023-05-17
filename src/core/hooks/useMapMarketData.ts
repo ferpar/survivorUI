@@ -14,7 +14,7 @@ type marketDataMapper = (formState: {
   startDate: number;
   endDate: number;
   short: boolean;
-  baseAmount: number;
+  quoteAmount: number;
   maxSoldiers: number;
   amountPerSoldier: number;
   stop: number;
@@ -31,7 +31,7 @@ const useMapMarketData: marketDataMapper = ({
   startDate,
   endDate,
   short = false,
-  baseAmount = 1000,
+  quoteAmount = 1000,
   maxSoldiers = 10,
   amountPerSoldier = 100,
   stop = 0.1,
@@ -42,7 +42,7 @@ const useMapMarketData: marketDataMapper = ({
   // Parameters for the backtest
   const startTimestamp = new Date(startDate).getTime();
   const endTimestamp = new Date(endDate).getTime();
-  const quoteAmount = 0;
+  const baseAmount = 0;
 
   useEffect(() => {
     // fetch data from API
@@ -50,8 +50,8 @@ const useMapMarketData: marketDataMapper = ({
       const marketDataRawResponse: any = await fetchJson(
         `http://localhost:3000/backtest` +
           `?stop=${stop}&limit=${limit}&startTimestamp=${startTimestamp}&` +
-          `endTimestamp=${endTimestamp}&baseAmount=${baseAmount}&` +
-          `quoteAmount=${quoteAmount}&maxSoldiers=${maxSoldiers}&` +
+          `endTimestamp=${endTimestamp}&quoteAmount=${quoteAmount}&` +
+          `baseAmount=${baseAmount}&maxSoldiers=${maxSoldiers}&` +
           `amountPerSoldier=${amountPerSoldier}&short=${short}`
       );
 
@@ -74,7 +74,7 @@ const useMapMarketData: marketDataMapper = ({
     startDate,
     endDate,
     short,
-    baseAmount,
+    quoteAmount,
     maxSoldiers,
     amountPerSoldier,
     stop,

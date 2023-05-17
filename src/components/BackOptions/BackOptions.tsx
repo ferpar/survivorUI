@@ -9,14 +9,14 @@ const BackOptions = () => {
       endDate: endTimestamp,
       short,
       maxSoldiers,
-      baseAmount,
+      quoteAmount,
       amountPerSoldier,
     },
     setStartDate,
     setEndDate,
     setShort,
     setMaxSoldiers,
-    setBaseAmount,
+    setQuoteAmount,
     setAmountPerSoldier,
   } = React.useContext(BacktestContext);
 
@@ -45,15 +45,15 @@ const BackOptions = () => {
     const { name, value } = e.target;
     if (name === "max-soldiers") {
       if (ratio) {
-        setBaseAmount((Number(value) * amountPerSoldier) / ratio);
+        setQuoteAmount((Number(value) * amountPerSoldier) / ratio);
       }
       setMaxSoldiers(Number(value));
-    } else if (name === "base-amount") {
+    } else if (name === "quote-amount") {
       if (ratio) return;
-      setBaseAmount(Number(value));
+      setQuoteAmount(Number(value));
     } else if (name === "amount-per-soldier") {
       if (ratio) {
-        setBaseAmount((Number(value) * maxSoldiers) / ratio);
+        setQuoteAmount((Number(value) * maxSoldiers) / ratio);
       }
       setAmountPerSoldier(Number(value));
     }
@@ -63,7 +63,7 @@ const BackOptions = () => {
     const { name, checked } = e.target;
     if (name === "ratio") {
       if (checked) {
-        setRatio((maxSoldiers * amountPerSoldier) / baseAmount);
+        setRatio((maxSoldiers * amountPerSoldier) / quoteAmount);
       } else {
         setRatio(0);
       }
@@ -116,17 +116,17 @@ const BackOptions = () => {
             onChange={amountChangeHandler}
           />
         </label>
-        <label htmlFor="base-amount">
-          <span>Base Amount</span>
-          <BaseAmountWrapper>
+        <label htmlFor="quote-amount">
+          <span>Quote Amount</span>
+          <QuoteAmountWrapper>
             <input
               disabled={ratio}
               type="number"
-              id="base-amount"
-              name="base-amount"
+              id="quote-amount"
+              name="quote-amount"
               min={100}
               step={100}
-              value={baseAmount.toFixed(2)}
+              value={quoteAmount.toFixed(2)}
               onChange={amountChangeHandler}
             />
             <RatioCheck>
@@ -139,7 +139,7 @@ const BackOptions = () => {
                 onChange={checkRatioHandler}
               />
             </RatioCheck>
-          </BaseAmountWrapper>
+          </QuoteAmountWrapper>
         </label>
         <label htmlFor="amount-per-soldier">
           <span>Amount Per Soldier</span>
@@ -193,7 +193,7 @@ const FieldSetAnimated = styled(FieldSet)`
   animation: ${slideInFromRight} 0.7s ease-out both;
 `;
 
-const BaseAmountWrapper = styled.div`
+const QuoteAmountWrapper = styled.div`
   position: relative;
 `;
 const RatioCheck = styled.div`
