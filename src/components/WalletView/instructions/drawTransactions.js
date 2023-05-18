@@ -37,8 +37,8 @@ export default function drawTransactions({
     .attr("height", transactionsBarHeight / 2)
     .style("cursor", "pointer")
     .style("fill", (d) => {
-      if (d.type === "buy") return "green";
-      if (d.type === "sell") return "red";
+      if (d.type === "buy" || d.type === "short") return "green";
+      if (d.type === "sell" || d.type === "shortCover") return "red";
       return "black";
     });
 
