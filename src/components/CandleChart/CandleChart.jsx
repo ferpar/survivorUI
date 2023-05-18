@@ -38,6 +38,7 @@ const CandleChart = ({ withLogScale = true }) => {
     const svg = select(svgRef.current);
     if (!dimensions) return;
     if (!data) return;
+    console.log(data);
 
     const xScale = scaleTime()
       .domain(extent(data, (d) => d.date))
@@ -59,6 +60,16 @@ const CandleChart = ({ withLogScale = true }) => {
 
     const candleWidth =
       (0.8 * (width - margins.left - margins.right)) / data.length;
+
+    const dependencyFrame = [
+      margins,
+      dimensions,
+      svg,
+      candleContainer,
+      xScale,
+      yScale,
+      candleWidth,
+    ];
 
     candleContainer
       .selectAll(".candle")
@@ -173,10 +184,10 @@ const CandleChart = ({ withLogScale = true }) => {
           year: "numeric",
         });
         const precision = 5;
-        const open = d.open.toFixed(precision);
-        const high = d.high.toFixed(precision);
-        const low = d.low.toFixed(precision);
-        const close = d.close.toFixed(precision);
+        const open = parseFloat(d.open).toPrecision(precision);
+        const high = parseFloat(d.high).toPrecision(precision);
+        const low = parseFloat(d.low).toPrecision(precision);
+        const close = parseFloat(d.close).toPrecision(precision);
         const tooltipHTML = `
           <div>Date: ${dateStr}</div>
           <div>Open: ${open}</div>
