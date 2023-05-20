@@ -40,9 +40,8 @@ const defaultContext: IBacktestContext = {
   setLimit: () => {},
 };
 
-export const BacktestContext = React.createContext<
-  IBacktestContext | undefined
->(defaultContext);
+export const BacktestContext =
+  React.createContext<IBacktestContext>(defaultContext);
 
 const threeMonthsAgo = new Date(
   new Date().setMonth(new Date().getMonth() - 3)

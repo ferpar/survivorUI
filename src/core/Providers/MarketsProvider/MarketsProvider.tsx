@@ -14,13 +14,12 @@ const MarketsProvider = ({ children }: { children: ReactNode }) => {
   React.useEffect(() => {
     (async () => {
       const availableMarkets = await fetchJson("http://localhost:3000/markets");
-      console.log(availableMarkets);
       setAvailableMarkets(availableMarkets);
     })();
   }, []);
 
   return (
-    <MarketsContext.Provider value={{ availableMarkets }}>
+    <MarketsContext.Provider value={{ availableMarkets: availableMarkets }}>
       {children}
     </MarketsContext.Provider>
   );

@@ -1,5 +1,6 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FormState } from "./hooks";
+import { MarketsContext } from "../Providers/MarketsProvider";
 
 type RawMarketDatum = [Date, number, number, number, number];
 
@@ -29,6 +30,7 @@ const useMapMarketData: marketDataMapper = ({
   stop = 0.1,
   limit = 0.5,
 }) => {
+  const availableMarkets = React.useContext(MarketsContext);
   const [data, setData] = useState<any>({});
 
   // Parameters for the backtest
@@ -39,6 +41,7 @@ const useMapMarketData: marketDataMapper = ({
   useEffect(() => {
     // fetch data from API
     (async () => {
+      console.log(availableMarkets);
       const marketDataRawResponse: any = await fetchJson(
         `http://localhost:3000/backtest` +
           `?stop=${stop}&limit=${limit}&startTimestamp=${startTimestamp}&` +
