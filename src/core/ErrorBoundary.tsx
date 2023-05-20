@@ -1,9 +1,21 @@
 import React from "react";
 
-class ErrorBoundary extends React.Component {
+type ErrorBoundaryProps = {
+  fallback?: React.ReactNode;
+  children: React.ReactNode;
+};
+
+type ErrorBoundaryState = {
+  hasError: boolean;
+};
+
+class ErrorBoundary extends React.Component<
+  ErrorBoundaryProps,
+  ErrorBoundaryState
+> {
   // Equivalent to:
   // const [hasError, setHasError] = useState(false);
-  constructor(props) {
+  constructor(props: ErrorBoundaryProps) {
     super(props);
     this.state = { hasError: false };
   }
@@ -12,7 +24,7 @@ class ErrorBoundary extends React.Component {
     return { hasError: true };
   }
 
-  componentDidCatch(error, errorInfo) {
+  componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
     console.error(error);
     console.info({ errorInfo });
   }
