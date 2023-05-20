@@ -1,5 +1,6 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { FormState } from "./hooks";
+import { MarketsContext } from "../Providers/MarketsProvider";
 
 interface BacktestConfig {
   margin: number;
@@ -82,10 +83,13 @@ const useHeatMapData: useHeatMapData = ({
   startDate,
   endDate,
   short = false,
-  quoteAmount: quoteAmount = 1000,
+  quoteAmount = 1000,
   maxSoldiers = 10,
   amountPerSoldier = 100,
 }) => {
+  const availableMarkets = React.useContext(MarketsContext);
+  const symbol = availableMarkets[0]?.symbol || "BINANCE_SPOT_BTC_USDT";
+  const period = availableMarkets[0]?.period || "1DAY";
   const [heatMapData, setHeatMapData] = useState<HeatMapData>(
     {} as HeatMapData
   );
@@ -96,10 +100,11 @@ const useHeatMapData: useHeatMapData = ({
 
   useEffect(() => {
     (async () => {
+      if (!availableMarkets) return;
       const heatMapDataRaw = await fetchJson(
         `http://localhost:3000/marginheatmap` +
-          `?startTimestamp=${startTimestamp}&endTimestamp=${endTimestamp}&quoteAmount=${quoteAmount}` +
-          `&baseAmount=${baseAmount}&maxSoldiers=${maxSoldiers}` +
+          `?symbol=${symbol}&period=${period}&startTimestamp=${startTimestamp}&endTimestamp=${endTimestamp}` +
+          `&quoteAmount=${quoteAmount}&baseAmount=${baseAmount}&maxSoldiers=${maxSoldiers}` +
           `&amountPerSoldier=${amountPerSoldier}&short=${short}`
       );
 
@@ -153,7 +158,15 @@ const useHeatMapData: useHeatMapData = ({
 
       setHeatMapData(newHeatMapData);
     })();
-  }, [startDate, endDate, short, quoteAmount, maxSoldiers, amountPerSoldier]);
+  }, [
+    startDate,
+    endDate,
+    short,
+    quoteAmount,
+    maxSoldiers,
+    amountPerSoldier,
+    availableMarkets,
+  ]);
 
   return heatMapData;
 };

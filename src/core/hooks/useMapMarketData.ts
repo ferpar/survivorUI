@@ -31,6 +31,8 @@ const useMapMarketData: marketDataMapper = ({
   limit = 0.5,
 }) => {
   const availableMarkets = React.useContext(MarketsContext);
+  const symbol = availableMarkets[0]?.symbol || "BINANCE_SPOT_BTC_USDT";
+  const period = availableMarkets[0]?.period || "1DAY";
   const [data, setData] = useState<any>({});
 
   // Parameters for the backtest
@@ -41,10 +43,10 @@ const useMapMarketData: marketDataMapper = ({
   useEffect(() => {
     // fetch data from API
     (async () => {
-      console.log(availableMarkets);
+      if (!availableMarkets) return;
       const marketDataRawResponse: any = await fetchJson(
         `http://localhost:3000/backtest` +
-          `?stop=${stop}&limit=${limit}&startTimestamp=${startTimestamp}&` +
+          `?symbol=${symbol}&${period}&stop=${stop}&limit=${limit}&startTimestamp=${startTimestamp}&` +
           `endTimestamp=${endTimestamp}&quoteAmount=${quoteAmount}&` +
           `baseAmount=${baseAmount}&maxSoldiers=${maxSoldiers}&` +
           `amountPerSoldier=${amountPerSoldier}&short=${short}`
@@ -74,6 +76,7 @@ const useMapMarketData: marketDataMapper = ({
     amountPerSoldier,
     stop,
     limit,
+    availableMarkets,
   ]);
 
   return data;
