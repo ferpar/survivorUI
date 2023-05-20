@@ -5,7 +5,6 @@ const precision = 4;
 
 const TransactionDetails = ({ selectedDate, transactionsByDate }) => {
   if (!transactionsByDate) return null;
-  console.log(transactionsByDate);
   // open states: null, true or false
   const [open, setOpen] = React.useState(null);
   const transactionsSelectedDate = selectedDate

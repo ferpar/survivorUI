@@ -4,16 +4,19 @@ import BackResults from "../BackResults";
 import ErrorBoundary from "../../core/ErrorBoundary";
 import BacktestProvider from "../../core/Providers/BacktestProvider";
 import SideSummary from "../SideSummary";
+import MarketsProvider from "../../core/Providers/MarketsProvider";
 
 const Backtest = () => {
   return (
     <Wrapper>
       <ErrorBoundary fallback={<p>"Error on Backtester"</p>}>
-        <BacktestProvider>
-          <BackOptions />
-          <BackResults />
-          <SideSummary />
-        </BacktestProvider>
+        <MarketsProvider>
+          <BacktestProvider>
+            <BackOptions />
+            <BackResults />
+            <SideSummary />
+          </BacktestProvider>
+        </MarketsProvider>
       </ErrorBoundary>
     </Wrapper>
   );
