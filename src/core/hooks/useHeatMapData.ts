@@ -87,9 +87,9 @@ const useHeatMapData: useHeatMapData = ({
   maxSoldiers = 10,
   amountPerSoldier = 100,
 }) => {
-  const availableMarkets = React.useContext(MarketsContext);
-  const symbol = availableMarkets[0]?.symbol || "BINANCE_SPOT_BTC_USDT";
-  const period = availableMarkets[0]?.period || "1DAY";
+  const { selectedMarket } = React.useContext(MarketsContext);
+  const symbol = selectedMarket?.symbol_id || "BINANCE_SPOT_BTC_USDT";
+  const period = selectedMarket?.period_id || "1DAY";
   const [heatMapData, setHeatMapData] = useState<HeatMapData>(
     {} as HeatMapData
   );
@@ -100,7 +100,7 @@ const useHeatMapData: useHeatMapData = ({
 
   useEffect(() => {
     (async () => {
-      if (!availableMarkets) return;
+      if (!selectedMarket) return;
       const heatMapDataRaw = await fetchJson(
         `http://localhost:3000/marginheatmap` +
           `?symbol=${symbol}&period=${period}&startTimestamp=${startTimestamp}&endTimestamp=${endTimestamp}` +
@@ -165,7 +165,7 @@ const useHeatMapData: useHeatMapData = ({
     quoteAmount,
     maxSoldiers,
     amountPerSoldier,
-    availableMarkets,
+    selectedMarket,
   ]);
 
   return heatMapData;

@@ -22,6 +22,16 @@ const MarketSelector = () => {
       )
     : [];
 
+  const handleSymbolChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const { value } = e.target;
+    selectMarket(value, selectedMarket?.period_id);
+  };
+
+  const handlePeriodChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const { value } = e.target;
+    selectMarket(selectedMarket?.symbol_id, value);
+  };
+
   return (
     <Form>
       <FieldSet>
@@ -32,6 +42,7 @@ const MarketSelector = () => {
             name="symbol_id"
             id="symbol_id"
             value={selectedMarket?.symbol_id}
+            onChange={handleSymbolChange}
           >
             {symbolIds &&
               Array.from(symbolIds).map((symbolId: string) => (
@@ -47,6 +58,7 @@ const MarketSelector = () => {
             name="period_id"
             id="period_id"
             value={selectedMarket?.perdio_id}
+            onChange={handlePeriodChange}
           >
             {periodIds &&
               Array.from(periodIds).map((periodId: string) => (
