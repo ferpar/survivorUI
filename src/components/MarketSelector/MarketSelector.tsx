@@ -1,21 +1,14 @@
 import React from "react";
 import styled from "styled-components";
-import { MarketsContext } from "../../core/Providers/MarketsProvider";
-
-interface IMarketData {
-  symbol_id: string;
-  exchange_id: string;
-  symbol_type: string;
-  period_id: string;
-  asset_id_base: string;
-  asset_id_quote: string;
-  data_start?: string;
-  data_end?: string;
-}
+import {
+  MarketsContext,
+  IMarketData,
+} from "../../core/Providers/MarketsProvider";
 
 const MarketSelector = () => {
-  const { availableMarkets } = React.useContext(MarketsContext);
-  console.log(availableMarkets);
+  const { availableMarkets, selectedMarket, selectMarket } =
+    React.useContext(MarketsContext);
+  console.log({ availableMarkets, selectedMarket });
 
   const symbolIds = availableMarkets
     ? new Set<string>(
@@ -35,7 +28,11 @@ const MarketSelector = () => {
         <Legend>Market Selection</Legend>
         <label>
           <span>Market</span>
-          <select name="symbol_id" id="symbol_id">
+          <select
+            name="symbol_id"
+            id="symbol_id"
+            value={selectedMarket?.symbol_id}
+          >
             {symbolIds &&
               Array.from(symbolIds).map((symbolId: string) => (
                 <option key={symbolId} value={symbolId}>
@@ -46,7 +43,11 @@ const MarketSelector = () => {
         </label>
         <label>
           <span>Period</span>
-          <select name="period_id" id="period_id">
+          <select
+            name="period_id"
+            id="period_id"
+            value={selectedMarket?.perdio_id}
+          >
             {periodIds &&
               Array.from(periodIds).map((periodId: string) => (
                 <option key={periodId} value={periodId}>
