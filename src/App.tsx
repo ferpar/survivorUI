@@ -4,9 +4,12 @@ import { Routes, Route, Link, Outlet } from "react-router-dom";
 
 function App() {
   return (
-    <Main>
+    <>
       <Header>
-        <h1>Survivor Alpha 0.2</h1>
+        <div>
+          <Title>Survivor</Title>
+          <Version>Alpha 3</Version>
+        </div>
         <Nav>
           <ol>
             <StLink to="/">Home</StLink> {/* acquire datasets */}
@@ -15,12 +18,14 @@ function App() {
           </ol>
         </Nav>
       </Header>
-      <Routes>
-        <Route path="/" element={<h1>Home</h1>} />
-        <Route path="/backtest" element={<BackTest />} />
-        <Route path="/live" element={<h1>Live</h1>} />
-      </Routes>
-    </Main>
+      <Main>
+        <Routes>
+          <Route path="/" element={<h1>Home</h1>} />
+          <Route path="/backtest" element={<BackTest />} />
+          <Route path="/live" element={<h1>Live</h1>} />
+        </Routes>
+      </Main>
+    </>
   );
 }
 
@@ -33,7 +38,7 @@ const Main = styled.main`
   flex-direction: column;
   align-items: center;
   justify-content: start;
-  padding: 2rem 32px;
+  padding: 0 32px 2rem;
 `;
 
 const Header = styled.header`
@@ -45,6 +50,17 @@ const Header = styled.header`
     font-weight: 600;
   }
   padding: 0 32px;
+`;
+
+const Title = styled.h1`
+  font-size: 2rem;
+  font-weight: 600;
+`;
+
+const Version = styled.p`
+  font-size: calc(14 / 16 * 1rem);
+  font-weight: 400;
+  text-align: right;
 `;
 
 const Nav = styled.nav`

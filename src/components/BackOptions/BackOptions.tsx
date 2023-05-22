@@ -75,6 +75,7 @@ const BackOptions = () => {
   return (
     <Form>
       <FieldSet>
+        <Legend>Interval Selection</Legend>
         <label htmlFor="start-date">
           <span>Start Date</span>
           <input
@@ -107,6 +108,7 @@ const BackOptions = () => {
         </label>
       </FieldSet>
       <FieldSetAnimated>
+        <Legend>Squad Parameters</Legend>
         <label htmlFor="max-soldiers">
           <span>Max Soldiers</span>
           <input
@@ -177,6 +179,15 @@ const FieldSet = styled.fieldset`
   & label > span {
     display: block;
   }
+  padding: 0;
+  margin-left: 8px; /* indent */
+`;
+
+const Legend = styled.legend`
+  font-size: calc(14 / 16 * 1rem);
+  font-weight: 400;
+  padding-left: 0;
+  margin-left: -8px; /* -indent */
 `;
 
 const slideInFromRight = keyframes`
