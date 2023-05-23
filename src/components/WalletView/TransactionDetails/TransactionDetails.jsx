@@ -29,7 +29,7 @@ const TransactionDetails = ({ selectedDate, transactionsByDate }) => {
                   : "no date selected"}
               </span>{" "}
             </h3>
-            {transactionsSelectedDate.map((transaction, idx) => {
+            {transactionsSelectedDate?.map((transaction, idx) => {
               // calculate entry amount in quote currency
               const entryAmount =
                 transaction?.entryPrice &&
