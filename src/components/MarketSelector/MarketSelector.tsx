@@ -8,7 +8,6 @@ import {
 const MarketSelector = () => {
   const { availableMarkets, selectedMarket, selectMarket } =
     React.useContext(MarketsContext);
-  console.log({ availableMarkets, selectedMarket });
 
   const symbolIds = availableMarkets
     ? new Set<string>(

@@ -9,6 +9,7 @@ export const Form = styled.form`
 `;
 
 export const FieldSet = styled.fieldset`
+  position: relative;
   border: none;
   display: flex;
   flex-direction: row;
@@ -58,5 +59,52 @@ export const RatioCheck = styled.div`
   gap: 4px;
   & > input {
     margin-bottom: -1px;
+  }
+`;
+
+export const ShortInput = styled.input`
+  max-width: 100px;
+`;
+
+export const IntervalModes = styled.div`
+  display: flex;
+  border-radius: 4px;
+  position: absolute;
+  top: -40%;
+  left: 20%;
+  margin-bottom: -100%;
+  box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.2);
+`;
+
+export const IntervalMode = styled.button`
+  & {
+    display: inline-block;
+    border: none;
+    background: none;
+    padding: 0.1rem 0.5rem;
+    font-size: inherit;
+    font-family: inherit;
+    cursor: pointer;
+    font-size: calc(12 / 16 * 1rem);
+    &:hover {
+      background: #eee;
+    }
+  }
+  &:first-child {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+  &:last-child {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+  &:not(:last-child) {
+    border-right: 1px solid #ccc;
+  }
+  &:not(:first-child) {
+    border-left: 1px solid #ccc;
+  }
+  &:hover {
+    background: #eee;
   }
 `;

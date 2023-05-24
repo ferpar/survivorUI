@@ -11,6 +11,12 @@ export interface IMarketData {
   data_end?: string;
 }
 
+export interface IMarketsContext {
+  availableMarkets: IMarketData[] | null;
+  selectedMarket: IMarketData | undefined;
+  selectMarket: (symbolId: string, periodId: string) => void;
+}
+
 export const MarketsContext = React.createContext<any | null>(null);
 
 const fetchJson = async (url: string) => {
